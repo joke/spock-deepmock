@@ -1,0 +1,6 @@
+rootProject.name = 'deepmock'
+
+include 'dependencies'
+include 'spock-deepmock'
+include 'examples-java'
+include 'examples-groovy'

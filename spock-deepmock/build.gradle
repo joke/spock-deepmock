@@ -1,0 +1,68 @@
+plugins {
+    id 'java-library'
+    id 'groovy'
+    id 'signing'
+    id 'maven-publish'
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+dependencies {
+    compileOnly platform(project(':dependencies'))
+    compileOnly 'org.spockframework:spock-core'
+}
+
+publishing {
+    publications {
+        spockDeepMock(MavenPublication) {
+            from components.java
+            pom {
+                name = project.name
+                description = project.description
+                url = "https://github.com/joke/${project.name}"
+                licenses {
+                    license {
+                        name = 'GNU GENERAL PUBLIC LICENSE, Version 3'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'joke'
+                        name = 'Joke de Buhr'
+                        email = 'joke@seiken.de'
+                    }
+                }
+                scm {
+                    connection = "scm:git:git://github.com/joke/${project.name}.git"
+                    developerConnection = "scm:git:git://github.com/joke/${project.name}.git"
+                    url = "http://github.com/joke/${project.name}/tree/master"
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name 'snapshot'
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+            credentials {
+                username 'joke'
+            }
+        }
+        maven {
+            name 'release'
+            url 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+            credentials {
+                username 'joke'
+            }
+        }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign publishing.publications.spockDeepMock
+}

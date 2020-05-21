@@ -1,0 +1,16 @@
+plugins {
+    id 'java-platform'
+}
+
+javaPlatform {
+    allowDependencies()
+}
+
+dependencies {
+    api platform('org.spockframework:spock-bom:2.0-M2-groovy-3.0')
+    api platform('org.codehaus.groovy:groovy-bom:3.0.3')
+
+    api 'org.projectlombok:lombok:1.18.12'
+    api 'net.bytebuddy:byte-buddy:1.10.10'
+    api 'org.objenesis:objenesis:3.1'
+}

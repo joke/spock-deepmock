@@ -1,0 +1,76 @@
+= `spock-deepmock`
+
+:icons: font
+
+`spock-deepmock` adds deep mocking capabilities to the http://spockframework.org/[Spock Framework].
+
+In contrast to builtin http://spockframework.org/spock/docs/1.3/all_in_one.html#_mocking[mocks]
+a deep mock will return another deep mock object automatically. This way there
+is no need to define chains of nested mocks.
+
+* Adds `DeepMock()` and `GroovyDeepMock()` for deep mocking
+* Build deep mocking chains for nested objects
+* Uses same syntax as the builtins `Mock()` and `GroovyMock()`
+* Supports interaction verification
+* Working with Spock Framework 1.3 and 2.0
+
+== Gradle Dependency
+
+.build.gradle
+[source,groovy]
+----
+dependencies {
+    testImplementation 'io.github.joke:spock-deepmock:1.0.0'
+}
+----
+
+== Maven Dependency
+
+.pom.xml
+[source,xml]
+----
+<depenencies>
+  <dependency>
+    <groupId>io.github.joke</groupId>
+    <artifactId>spock-deepmock</artifactId>
+    <version>1.0.0</version>
+    <scope>test</scope>
+  </dependency>
+</depenencies>
+----
+
+== Usage
+
+Deep mocks can be defined as any other mock. Features like options are supported.
+
+.Define deep mocks
+[source,groovy]
+----
+def mock = DeepMock(Nested)
+Nested mock = DeepMock()
+
+def mock = DeepMock(name: 'customName')
+Nested mock = DeepMock(name: 'customName')
+----
+
+.CallerTest.groovy
+[source,groovy]
+----
+def 'calling nested mock'() {
+    setup:
+    Nested mock = DeepMock()
+    def caller = new Caller(mock)
+
+    when:
+    // calls mock.getChild().getChild().getName()
+    def res = caller.nameOfSubSubChild()
+
+    then:
+    1 * mock.child.child.name >> 'Hello'
+
+    expect:
+    res == 'Hello'
+}
+----
+
+Further examples in link:examples-java[] or link:examples-groovy[].

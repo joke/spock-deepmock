@@ -1,0 +1,3 @@
+moduleName = deepmock-module
+moduleVersion = 1.0
+extensionClasses = io.github.joke.spockdeepmock.MockingApiExtension,io.github.joke.spockdeepmock.SpecInternalsExtension

@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id 'groovy'
+}
+
+dependencies {
+    annotationProcessor platform(project(':dependencies'))
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation platform(project(':dependencies'))
+    implementation 'org.projectlombok:lombok'
+
+    testImplementation platform(project(':dependencies'))
+    testImplementation project(':spock-deepmock')
+
+    testImplementation 'org.spockframework:spock-core'
+    testImplementation 'net.bytebuddy:byte-buddy'
+    testImplementation 'org.objenesis:objenesis'
+}
+
+test {
+    useJUnitPlatform()
+}
