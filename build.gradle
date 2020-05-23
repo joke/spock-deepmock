@@ -1,11 +1,13 @@
 plugins {
     id 'idea'
+    id 'io.freefair.git-version' version '5.1.0'
 }
 
 allprojects { project ->
     group 'io.github.joke'
-    version '1.0.0'
     description 'deep mocking for the spock framework'
+
+    println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ${project.version}")
 
     plugins.withType(JavaBasePlugin) {
         sourceCompatibility = JavaVersion.VERSION_1_8
