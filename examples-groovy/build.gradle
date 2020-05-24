@@ -1,0 +1,19 @@
+plugins {
+    id 'groovy'
+}
+
+dependencies {
+    implementation platform(project(':dependencies'))
+    implementation 'org.codehaus.groovy:groovy'
+
+    testImplementation platform(project(':dependencies'))
+    testImplementation project(':spock-deepmock')
+
+    testImplementation 'org.spockframework:spock-core'
+    testImplementation 'net.bytebuddy:byte-buddy'
+    testImplementation 'org.objenesis:objenesis'
+}
+
+test {
+    useJUnitPlatform()
+}
