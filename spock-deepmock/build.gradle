@@ -8,11 +8,22 @@ plugins {
 java {
     withJavadocJar()
     withSourcesJar()
+
+    registerFeature('spock13') {
+        usingSourceSet(sourceSets.main)
+    }
+    registerFeature('spock20') {
+        usingSourceSet(sourceSets.main)
+    }
 }
 
 dependencies {
-    compileOnly platform(project(':dependencies'))
-    compileOnly 'org.spockframework:spock-core'
+    compileOnly platform('org.codehaus.groovy:groovy-bom:3.0.3')
+
+    spock13Api platform('org.spockframework:spock-bom:1.3-groovy-2.5')
+    spock20Api platform('org.spockframework:spock-bom:2.0-M2-groovy-3.0')
+
+    api 'org.spockframework:spock-core'
 }
 
 publishing {
