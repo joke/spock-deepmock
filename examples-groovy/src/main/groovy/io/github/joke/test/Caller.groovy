@@ -1,4 +1,4 @@
-package de.xckk.test.deepmock
+package io.github.joke.test
 
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor

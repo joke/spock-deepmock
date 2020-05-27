@@ -1,4 +1,4 @@
-package de.xckk.test.deepmock
+package io.github.joke.test
 
 import org.spockframework.mock.MockUtil
 import spock.lang.Specification
