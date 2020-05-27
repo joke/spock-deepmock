@@ -1,4 +1,4 @@
-rootProject.name = 'deepmock'
+rootProject.name = 'spock-deepmock'
 
 include 'dependencies'
 include 'spock-deepmock'
