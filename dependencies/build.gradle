@@ -8,9 +8,9 @@ javaPlatform {
 
 dependencies {
     api platform('org.spockframework:spock-bom:2.0-M3-groovy-3.0')
-    api platform('org.codehaus.groovy:groovy-bom:3.0.4')
+    api platform('org.codehaus.groovy:groovy-bom:3.0.5')
 
     api 'org.projectlombok:lombok:1.18.12'
-    api 'net.bytebuddy:byte-buddy:1.10.10'
+    api 'net.bytebuddy:byte-buddy:1.10.14'
     api 'org.objenesis:objenesis:3.1'
 }
