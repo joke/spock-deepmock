@@ -16,6 +16,8 @@ is no need to define chains of nested mocks.
 
 == Gradle Dependency
 
+image:https://img.shields.io/maven-central/v/io.github.joke/spock-deepmock?label=latest%20version[link=https://search.maven.org/artifact/io.github.joke/spock-deepmock]
+
 .build.gradle
 [source,groovy]
 ----
