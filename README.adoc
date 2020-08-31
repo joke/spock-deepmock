@@ -2,6 +2,9 @@
 
 :icons: font
 
+image:https://github.com/joke/spock-deepmock/workflows/build/badge.svg?branch=master[]
+image:https://img.shields.io/maven-central/v/io.github.joke/spock-deepmock?label=latest%20version[link=https://search.maven.org/artifact/io.github.joke/spock-deepmock]
+
 `spock-deepmock` adds deep mocking capabilities to the http://spockframework.org/[Spock Framework].
 
 In contrast to builtin http://spockframework.org/spock/docs/1.3/all_in_one.html#_mocking[mocks]
