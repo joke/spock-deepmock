@@ -4,6 +4,7 @@
 
 image:https://github.com/joke/spock-deepmock/workflows/build/badge.svg?branch=master[]
 image:https://img.shields.io/maven-central/v/io.github.joke/spock-deepmock?label=latest%20version[link=https://search.maven.org/artifact/io.github.joke/spock-deepmock]
+image:https://api.dependabot.com/badges/status?host=github&repo=joke/spock-deepmock[link=https://github.com/dependabot]
 
 `spock-deepmock` adds deep mocking capabilities to the http://spockframework.org/[Spock Framework].
 
