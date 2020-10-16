@@ -10,7 +10,7 @@ dependencies {
     api platform('org.spockframework:spock-bom:2.0-M3-groovy-3.0')
     api platform('org.codehaus.groovy:groovy-bom:3.0.5')
 
-    api 'org.projectlombok:lombok:1.18.14'
+    api 'org.projectlombok:lombok:1.18.16'
     api 'net.bytebuddy:byte-buddy:1.10.17'
     api 'org.objenesis:objenesis:3.1'
 }
