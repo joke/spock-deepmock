@@ -7,7 +7,7 @@ javaPlatform {
 }
 
 dependencies {
-    api platform('org.spockframework:spock-bom:2.0-M3-groovy-3.0')
+    api platform('org.spockframework:spock-bom:2.0-M4-groovy-3.0')
     api platform('org.codehaus.groovy:groovy-bom:3.0.5')
 
     api 'org.projectlombok:lombok:1.18.16'
