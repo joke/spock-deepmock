@@ -11,6 +11,6 @@ dependencies {
     api platform('org.codehaus.groovy:groovy-bom:3.0.5')
 
     api 'org.projectlombok:lombok:1.18.16'
-    api 'net.bytebuddy:byte-buddy:1.10.17'
+    api 'net.bytebuddy:byte-buddy:1.10.18'
     api 'org.objenesis:objenesis:3.1'
 }
