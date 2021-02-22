@@ -16,6 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Import GPG
+        if: ${{ contains(github.ref, 'refs/tags/') }}
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v3
         with:
