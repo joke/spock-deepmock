@@ -8,6 +8,6 @@ javaPlatform {
 
 dependencies {
     api 'org.projectlombok:lombok:1.18.18'
-    api 'net.bytebuddy:byte-buddy:1.10.20'
+    api 'net.bytebuddy:byte-buddy:1.10.21'
     api 'org.objenesis:objenesis:3.1'
 }
