@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation platform(project(':dependencies'))
     implementation platform('org.codehaus.groovy:groovy-bom:3.0.8')
-    implementation platform('org.spockframework:spock-bom:2.0-M5-groovy-3.0')
+    implementation platform('org.spockframework:spock-bom:2.0-groovy-3.0')
     implementation 'org.codehaus.groovy:groovy'
 
     testImplementation platform(project(':dependencies'))

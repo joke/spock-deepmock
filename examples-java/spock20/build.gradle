@@ -12,7 +12,7 @@ dependencies {
 
     testImplementation project(':spock-deepmock')
     implementation platform('org.codehaus.groovy:groovy-bom:3.0.8')
-    implementation platform('org.spockframework:spock-bom:2.0-M5-groovy-3.0')
+    implementation platform('org.spockframework:spock-bom:2.0-groovy-3.0')
 
     testImplementation 'net.bytebuddy:byte-buddy'
     testImplementation 'org.objenesis:objenesis'
