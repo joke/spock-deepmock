@@ -7,7 +7,7 @@ javaPlatform {
 }
 
 dependencies {
-    api 'org.projectlombok:lombok:1.18.20'
+    api 'org.projectlombok:lombok:1.18.22'
     api 'net.bytebuddy:byte-buddy:1.11.18'
     api 'org.objenesis:objenesis:3.2'
 }
