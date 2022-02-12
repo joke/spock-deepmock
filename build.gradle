@@ -1,11 +1,12 @@
 plugins {
     id 'idea'
-    id 'io.freefair.git-version' version '6.3.0'
+    id 'com.github.jmongard.git-semver-plugin' version '0.4.2'
 }
 
 allprojects { project ->
     group 'io.github.joke'
     description 'deep mocking for the spock framework'
+    version semver.version
 
     repositories {
         mavenCentral()
