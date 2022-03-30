@@ -15,3 +15,11 @@ repos:
     - --autofix
     - --indent
     - '2'
+- repo: https://github.com/compilerla/conventional-pre-commit
+  rev: v1.2.0
+  hooks:
+  - id: conventional-pre-commit
+    stages: [commit-msg]
+ci:
+  autofix_commit_msg: 'chore: pre-commit auto fixes'
+  autoupdate_commit_msg: 'chore: pre-commit autoupdate'
