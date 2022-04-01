@@ -28,6 +28,7 @@ branches:
       contexts: []
     enforce_admins: false
     required_linear_history: true
+    require_signed_commits: true
     restrictions:
       apps: []
       users: []
