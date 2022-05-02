@@ -10,7 +10,7 @@ dependencies {
     implementation platform(project(':dependencies'))
     implementation 'org.projectlombok:lombok'
 
-    testImplementation platform('org.codehaus.groovy:groovy-bom:2.5.15')
+    testImplementation platform('org.codehaus.groovy:groovy-bom:3.0.10')
     testImplementation platform('org.spockframework:spock-bom:1.3-groovy-2.5')
     testImplementation project(':spock-deepmock')
     testImplementation 'org.spockframework:spock-core'
