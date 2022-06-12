@@ -1,10 +1,5 @@
 rootProject.name = 'spock-deepmock'
 
+include 'examples'
 include 'dependencies'
 include 'spock-deepmock'
-include 'examples-java:spock13'
-include 'examples-java:spock20'
-include 'examples-java:spock21'
-include 'examples-groovy:spock13'
-include 'examples-groovy:spock20'
-include 'examples-groovy:spock21'
