@@ -13,11 +13,7 @@ java {
 dependencies {
     compileOnly platform('org.codehaus.groovy:groovy-bom:3.0.9')
     compileOnly platform('org.spockframework:spock-bom:2.1-groovy-3.0')
-
-    api 'org.spockframework:spock-core'
-
-    runtimeOnly platform('org.codehaus.groovy:groovy-bom:3.0.9')
-    runtimeOnly platform('org.spockframework:spock-bom:2.1-groovy-3.0')
+    compileOnly 'org.spockframework:spock-core'
 }
 
 publishing {
