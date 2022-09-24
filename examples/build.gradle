@@ -15,10 +15,10 @@ def spock2x = ['spock20groovy25', 'spock20groovy30', 'spock21groovy25', 'spock21
 }
 
 dependencies {
-    implementation platform('org.codehaus.groovy:groovy-bom:3.0.12')
+    implementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
     implementation 'org.codehaus.groovy:groovy'
 
-    testImplementation platform('org.codehaus.groovy:groovy-bom:3.0.12')
+    testImplementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
     testImplementation platform('org.spockframework:spock-bom:2.1-groovy-3.0')
     testImplementation project(':spock-deepmock')
     testImplementation 'org.slf4j:slf4j-simple:2.0.2'
@@ -46,7 +46,7 @@ dependencies {
     spock20groovy25Implementation 'org.slf4j:slf4j-simple:1.7.36'
     spock20groovy25Implementation 'org.spockframework:spock-core'
 
-    spock20groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.12')
+    spock20groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
     spock20groovy30Implementation platform('org.spockframework:spock-bom:2.0-groovy-3.0')
     spock20groovy30Implementation project(':spock-deepmock')
     spock20groovy30Implementation 'org.slf4j:slf4j-simple:1.7.36'
@@ -58,7 +58,7 @@ dependencies {
     spock21groovy25Implementation 'org.slf4j:slf4j-simple:1.7.36'
     spock21groovy25Implementation 'org.spockframework:spock-core'
 
-    spock21groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.12')
+    spock21groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
     spock21groovy30Implementation platform('org.spockframework:spock-bom:2.1-groovy-3.0')
     spock21groovy30Implementation project(':spock-deepmock')
     spock21groovy30Implementation 'org.slf4j:slf4j-simple:1.7.36'
@@ -70,7 +70,7 @@ dependencies {
     spock22groovy25Implementation 'org.slf4j:slf4j-simple:1.7.36'
     spock22groovy25Implementation 'org.spockframework:spock-core'
 
-    spock22groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.12')
+    spock22groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
     spock22groovy30Implementation platform('org.spockframework:spock-bom:2.2-groovy-3.0')
     spock22groovy30Implementation project(':spock-deepmock')
     spock22groovy30Implementation 'org.slf4j:slf4j-simple:1.7.36'
