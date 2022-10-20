@@ -4,7 +4,12 @@ plugins {
 }
 
 def spock13 = ['spock13groovy24', 'spock13groovy25']
-def spock2x = ['spock20groovy25', 'spock20groovy30', 'spock21groovy25', 'spock21groovy30', 'spock22groovy25', 'spock22groovy30', 'spock22groovy40']
+def spock2x = [
+        'spock20groovy25', 'spock20groovy30',
+        'spock21groovy25', 'spock21groovy30',
+        'spock22groovy25', 'spock22groovy30', 'spock22groovy40',
+        'spock23groovy25', 'spock23groovy30', 'spock23groovy40'
+]
 
 [*spock13, *spock2x].forEach {
     sourceSets.create(it) {
@@ -15,8 +20,9 @@ def spock2x = ['spock20groovy25', 'spock20groovy30', 'spock21groovy25', 'spock21
 }
 
 dependencies {
-    implementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
-    implementation 'org.codehaus.groovy:groovy'
+    implementation platform('org.apache.groovy:groovy-bom:4.0.5')
+    implementation platform('org.spockframework:spock-bom:2.3-groovy-4.0')
+    implementation 'org.apache.groovy:groovy'
 
     testImplementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
     testImplementation platform('org.spockframework:spock-bom:2.1-groovy-3.0')
@@ -81,6 +87,24 @@ dependencies {
     spock22groovy40Implementation project(':spock-deepmock')
     spock22groovy40Implementation 'org.slf4j:slf4j-simple:1.7.36'
     spock22groovy40Implementation 'org.spockframework:spock-core'
+
+    spock23groovy25Implementation platform('org.codehaus.groovy:groovy-bom:2.5.16')
+    spock23groovy25Implementation platform('org.spockframework:spock-bom:2.3-groovy-2.5')
+    spock23groovy25Implementation project(':spock-deepmock')
+    spock23groovy25Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock23groovy25Implementation 'org.spockframework:spock-core'
+
+    spock23groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
+    spock23groovy30Implementation platform('org.spockframework:spock-bom:2.3-groovy-3.0')
+    spock23groovy30Implementation project(':spock-deepmock')
+    spock23groovy30Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock23groovy30Implementation 'org.spockframework:spock-core'
+
+    spock23groovy40Implementation platform('org.apache.groovy:groovy-bom:4.0.5')
+    spock23groovy40Implementation platform('org.spockframework:spock-bom:2.3-groovy-4.0')
+    spock23groovy40Implementation project(':spock-deepmock')
+    spock23groovy40Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock23groovy40Implementation 'org.spockframework:spock-core'
 }
 
 spock13.forEach { source ->

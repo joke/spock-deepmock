@@ -18,7 +18,7 @@ is no need to define chains of nested mocks.
 * Build deep mocking chains for nested objects
 * Uses same syntax as the builtins `Mock()` and `GroovyMock()`
 * Supports interaction verification
-* Works with Spock Framework 1.3, 2.0, 2.1 and 2.2
+* Works with Spock Framework 1.3, 2.0, 2.1, 2.2 and 2.3
 
 == Gradle Dependency
 
@@ -28,7 +28,7 @@ image:https://img.shields.io/maven-central/v/io.github.joke/spock-deepmock?label
 [source,groovy]
 ----
 dependencies {
-    testImplementation 'io.github.joke:spock-deepmock:3.0.0'
+    testImplementation 'io.github.joke:spock-deepmock:x.y.z'
 }
 ----
 
@@ -41,7 +41,7 @@ dependencies {
   <dependency>
     <groupId>io.github.joke</groupId>
     <artifactId>spock-deepmock</artifactId>
-    <version>3.0.0</version>
+    <version>x.y.z</version>
     <scope>test</scope>
   </dependency>
 </depenencies>
