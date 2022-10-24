@@ -20,7 +20,7 @@ def spock2x = [
 }
 
 dependencies {
-    implementation platform('org.apache.groovy:groovy-bom:4.0.5')
+    implementation platform('org.apache.groovy:groovy-bom:4.0.6')
     implementation platform('org.spockframework:spock-bom:2.3-groovy-4.0')
     implementation 'org.apache.groovy:groovy'
 

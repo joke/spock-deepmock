@@ -11,7 +11,7 @@ java {
 }
 
 dependencies {
-    compileOnly platform('org.apache.groovy:groovy-bom:4.0.5')
+    compileOnly platform('org.apache.groovy:groovy-bom:4.0.6')
     compileOnly platform('org.spockframework:spock-bom:2.3-groovy-4.0')
 
     compileOnly 'org.spockframework:spock-core'
