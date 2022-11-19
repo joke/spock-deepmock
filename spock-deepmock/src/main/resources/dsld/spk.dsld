@@ -1,0 +1,19 @@
+package dsld
+
+import org.codehaus.groovy.ast.expr.*
+
+assertVersion(groovyEclipse: "2.7.2") // tested against this version
+
+// DeepMock(Foo) { /* delegates to instance of type Foo /* }
+// works for all mock factory methods and all overloads that include a type
+contribute(
+    enclosingClass(subType("spock.lang.Specification")) &
+    enclosingCallDeclaringType("spock.mock.MockingApi") &
+    bind(theCalls: enclosingCall(name("DeepMock") | name("GroovyDeepMock") &
+	enclosingClosure()) {
+  def args = theCalls.iterator().next().arguments.expressions
+  def mockType = args.find { it instanceof ClassExpression }
+  if (mockType) {
+    delegatesTo(mockType)
+  }
+}
