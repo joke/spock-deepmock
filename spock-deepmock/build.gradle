@@ -17,6 +17,11 @@ dependencies {
     compileOnly 'org.spockframework:spock-core'
 }
 
+sourceSets.main {
+    java.srcDirs = []
+    groovy.srcDirs = ['src/main/groovy', 'src/main/java']
+}
+
 publishing {
     publications {
         spockDeepMock(MavenPublication) {
