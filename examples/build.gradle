@@ -19,79 +19,94 @@ def spock2x = [
 }
 
 dependencies {
-    implementation platform('org.apache.groovy:groovy-bom:4.0.6')
-    implementation platform('org.spockframework:spock-bom:2.3-groovy-4.0')
+    implementation enforcedPlatform(project(':dependencies'))
+    implementation enforcedPlatform('org.apache.groovy:groovy-bom:4.0.6')
+    implementation enforcedPlatform('org.spockframework:spock-bom:2.3-groovy-4.0')
     implementation 'org.apache.groovy:groovy'
 
-    testImplementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
-    testImplementation platform('org.spockframework:spock-bom:2.1-groovy-3.0')
     testImplementation project(':spock-deepmock')
     testImplementation 'org.slf4j:slf4j-simple:2.0.3'
     testImplementation 'org.spockframework:spock-core'
 
-    spock20groovy25Implementation platform('org.codehaus.groovy:groovy-bom:2.5.16')
-    spock20groovy25Implementation platform('org.spockframework:spock-bom:2.0-groovy-2.5')
+    spock20groovy25Implementation enforcedPlatform(project(':dependencies'))
+    spock20groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.16')
+    spock20groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.0-groovy-2.5')
     spock20groovy25Implementation project(':spock-deepmock')
-    spock20groovy25Implementation 'org.slf4j:slf4j-simple:2.0.3'
+    spock20groovy25Implementation 'org.slf4j:slf4j-simple'
     spock20groovy25Implementation 'org.spockframework:spock-core'
 
-    spock20groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
-    spock20groovy30Implementation platform('org.spockframework:spock-bom:2.0-groovy-3.0')
+    spock20groovy30Implementation enforcedPlatform(project(':dependencies'))
+    spock20groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
+    spock20groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.0-groovy-3.0')
     spock20groovy30Implementation project(':spock-deepmock')
-    spock20groovy30Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock20groovy30Implementation 'org.slf4j:slf4j-simple'
     spock20groovy30Implementation 'org.spockframework:spock-core'
 
-    spock21groovy25Implementation platform('org.codehaus.groovy:groovy-bom:2.5.16')
-    spock21groovy25Implementation platform('org.spockframework:spock-bom:2.1-groovy-2.5')
+    spock21groovy25Implementation enforcedPlatform(project(':dependencies'))
+    spock21groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.16')
+    spock21groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.1-groovy-2.5')
     spock21groovy25Implementation project(':spock-deepmock')
-    spock21groovy25Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock21groovy25Implementation 'org.slf4j:slf4j-simple'
     spock21groovy25Implementation 'org.spockframework:spock-core'
 
-    spock21groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
-    spock21groovy30Implementation platform('org.spockframework:spock-bom:2.1-groovy-3.0')
+    spock21groovy30Implementation enforcedPlatform(project(':dependencies'))
+    spock21groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
+    spock21groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.1-groovy-3.0')
     spock21groovy30Implementation project(':spock-deepmock')
-    spock21groovy30Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock21groovy30Implementation 'org.slf4j:slf4j-simple'
     spock21groovy30Implementation 'org.spockframework:spock-core'
 
-    spock22groovy25Implementation platform('org.codehaus.groovy:groovy-bom:2.5.16')
-    spock22groovy25Implementation platform('org.spockframework:spock-bom:2.2-groovy-2.5')
+    spock22groovy25Implementation enforcedPlatform(project(':dependencies'))
+    spock22groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.16')
+    spock22groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.2-groovy-2.5')
     spock22groovy25Implementation project(':spock-deepmock')
-    spock22groovy25Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock22groovy25Implementation 'net.bytebuddy:byte-buddy'
+    spock22groovy25Implementation 'org.slf4j:slf4j-simple'
     spock22groovy25Implementation 'org.spockframework:spock-core'
 
-    spock22groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
-    spock22groovy30Implementation platform('org.spockframework:spock-bom:2.2-groovy-3.0')
+    spock22groovy30Implementation enforcedPlatform(project(':dependencies'))
+    spock22groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
+    spock22groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.2-groovy-3.0')
     spock22groovy30Implementation project(':spock-deepmock')
-    spock22groovy30Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock22groovy30Implementation 'net.bytebuddy:byte-buddy'
+    spock22groovy30Implementation 'org.slf4j:slf4j-simple'
     spock22groovy30Implementation 'org.spockframework:spock-core'
 
-    spock22groovy40Implementation platform('org.apache.groovy:groovy-bom:4.0.6')
-    spock22groovy40Implementation platform('org.spockframework:spock-bom:2.2-groovy-4.0')
+    spock22groovy40Implementation enforcedPlatform(project(':dependencies'))
+    spock22groovy40Implementation enforcedPlatform('org.apache.groovy:groovy-bom:4.0.6')
+    spock22groovy40Implementation enforcedPlatform('org.spockframework:spock-bom:2.2-groovy-4.0')
     spock22groovy40Implementation project(':spock-deepmock')
-    spock22groovy40Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock22groovy40Implementation 'net.bytebuddy:byte-buddy'
+    spock22groovy40Implementation 'org.slf4j:slf4j-simple'
     spock22groovy40Implementation 'org.spockframework:spock-core'
 
-    spock23groovy25Implementation platform('org.codehaus.groovy:groovy-bom:2.5.16')
-    spock23groovy25Implementation platform('org.spockframework:spock-bom:2.3-groovy-2.5')
+    spock23groovy25Implementation enforcedPlatform(project(':dependencies'))
+    spock23groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.16')
+    spock23groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.3-groovy-2.5')
     spock23groovy25Implementation project(':spock-deepmock')
-    spock23groovy25Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock23groovy25Implementation 'net.bytebuddy:byte-buddy'
+    spock23groovy25Implementation 'org.slf4j:slf4j-simple'
     spock23groovy25Implementation 'org.spockframework:spock-core'
 
-    spock23groovy30Implementation platform('org.codehaus.groovy:groovy-bom:3.0.13')
-    spock23groovy30Implementation platform('org.spockframework:spock-bom:2.3-groovy-3.0')
+    spock23groovy30Implementation enforcedPlatform(project(':dependencies'))
+    spock23groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
+    spock23groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.3-groovy-3.0')
     spock23groovy30Implementation project(':spock-deepmock')
-    spock23groovy30Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock23groovy30Implementation 'net.bytebuddy:byte-buddy'
+    spock23groovy30Implementation 'org.slf4j:slf4j-simple'
     spock23groovy30Implementation 'org.spockframework:spock-core'
 
-    spock23groovy40Implementation platform('org.apache.groovy:groovy-bom:4.0.5')
-    spock23groovy40Implementation platform('org.spockframework:spock-bom:2.3-groovy-4.0')
+    spock23groovy40Implementation enforcedPlatform(project(':dependencies'))
+    spock23groovy40Implementation enforcedPlatform('org.apache.groovy:groovy-bom:4.0.5')
+    spock23groovy40Implementation enforcedPlatform('org.spockframework:spock-bom:2.3-groovy-4.0')
     spock23groovy40Implementation project(':spock-deepmock')
-    spock23groovy40Implementation 'org.slf4j:slf4j-simple:1.7.36'
+    spock23groovy40Implementation 'net.bytebuddy:byte-buddy'
+    spock23groovy40Implementation 'org.slf4j:slf4j-simple'
     spock23groovy40Implementation 'org.spockframework:spock-core'
 }
 
 spock2x.forEach { source ->
-    tasks.register("test$source", Test) {
+    tasks.create("test$source", Test) { test ->
         group = 'verification'
 
         testClassesDirs = sourceSets.findByName(source).output.classesDirs
@@ -104,8 +119,4 @@ spock2x.forEach { source ->
 
 test {
     enabled = false
-}
-
-tasks.withType(Test) {
-    forkEvery 1
 }
