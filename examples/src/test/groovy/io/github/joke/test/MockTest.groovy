@@ -34,6 +34,7 @@ class MockTest extends Specification {
 
         then:
         1 * first.child.child.name >> 'Hello'
+        0 * _
 
         expect:
         res == 'Hello'
@@ -65,6 +66,56 @@ class MockTest extends Specification {
 
         then:
         1 * namedMock.child.child.name >> 'Hello'
+        0 * _
+
+        expect:
+        res == 'Hello'
+    }
+
+    def 'concurrent mock'() {
+        setup:
+        Nested nested1 = DeepMock()
+        Nested nested2 = DeepMock()
+
+        when:
+        def res1 = new Caller(nested1).call()
+        def res2 = new Caller(nested2).call()
+
+        then:
+        1 * nested2.child.child.name >> 'World'
+        1 * nested1.child.child.name >> 'Hello'
+        0 * _
+
+        expect:
+        res1 == 'Hello'
+        res2 == 'World'
+    }
+
+    def 'calling nested mock'() {
+        setup:
+        def caller = new Caller(first)
+
+        when:
+        def res = caller.call()
+
+        then:
+        1 * first.child.child.name >> 'Hello'
+        0 * _
+
+        expect:
+        res == 'Hello'
+    }
+
+    def 'calling nested parameter mock'() {
+        setup:
+        def caller = new Caller(first)
+
+        when:
+        def res = caller.callWithParameters()
+
+        then:
+        1 * first.child('first').child('second').name >> 'Hello'
+        0 * _
 
         expect:
         res == 'Hello'

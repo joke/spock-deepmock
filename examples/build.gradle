@@ -123,5 +123,5 @@ test {
 
 tasks.withType(GroovyCompile) {
     groovyOptions.fork = true
-    groovyOptions.forkOptions.jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y']
+//    groovyOptions.forkOptions.jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y']
 }
