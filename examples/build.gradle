@@ -20,12 +20,10 @@ def spock2x = [
 
 dependencies {
     implementation enforcedPlatform(project(':dependencies'))
-    implementation enforcedPlatform('org.apache.groovy:groovy-bom:4.0.6')
-    implementation enforcedPlatform('org.spockframework:spock-bom:2.3-groovy-4.0')
     implementation 'org.apache.groovy:groovy'
 
     testImplementation project(':spock-deepmock')
-    testImplementation 'org.slf4j:slf4j-simple:2.0.3'
+    testImplementation 'org.slf4j:slf4j-simple'
     testImplementation 'org.spockframework:spock-core'
 
     spock20groovy25Implementation enforcedPlatform(project(':dependencies'))
