@@ -18,15 +18,15 @@ public class SpockTransformationInitialization implements ASTTransformation {
 
     private static final List<String> DEEP_MOCK_IDENTIFIERS = asList("DeepMock", "GroovyDeepMock");
 
+    @SuppressWarnings("unchecked")
+    private static Set<String> accessIdentifierProperty(final String property) {
+        return (Set<String>) getProperty(Identifiers.class, property);
+    }
+
     @Override
     public void visit(final ASTNode[] nodes, final SourceUnit source) {
         accessIdentifierProperty("BUILT_IN_METHODS").addAll(DEEP_MOCK_IDENTIFIERS);
         accessIdentifierProperty("TEST_DOUBLE_METHODS").addAll(DEEP_MOCK_IDENTIFIERS);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static Set<String> accessIdentifierProperty(final String property) {
-        return (Set<String>) getProperty(Identifiers.class, property);
     }
 
 }

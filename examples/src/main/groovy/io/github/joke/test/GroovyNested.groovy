@@ -9,4 +9,8 @@ import groovy.transform.TupleConstructor
 class GroovyNested {
     String name
     GroovyNested child
+
+    GroovyNested child(final String name) {
+        child
+    }
 }
