@@ -11,4 +11,8 @@ class GroovyCaller {
     def call() {
         nested.child.child.name
     }
+
+    def callWithParameters() {
+        nested.child('first').child('second').name
+    }
 }

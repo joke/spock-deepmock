@@ -16,4 +16,9 @@ public class Nested {
     public Nested getChild() {
         return child;
     }
+
+    public Nested child(final String name) {
+        return child;
+    }
+
 }

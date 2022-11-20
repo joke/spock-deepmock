@@ -10,4 +10,8 @@ public class Caller {
     public String call() {
         return nested.getChild().getChild().getName();
     }
+
+    public String callWithParameters() {
+        return nested.child("first").child("second").getName();
+    }
 }

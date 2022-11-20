@@ -34,6 +34,7 @@ class GroovyMockTest extends Specification {
 
         then:
         1 * first.child.child.name >> 'Hello'
+        0 * _
 
         expect:
         res == 'Hello'
@@ -65,6 +66,56 @@ class GroovyMockTest extends Specification {
 
         then:
         1 * namedMock.child.child.name >> 'Hello'
+        0 * _
+
+        expect:
+        res == 'Hello'
+    }
+
+    def 'concurrent mock'() {
+        setup:
+        GroovyNested nested1 = GroovyDeepMock()
+        GroovyNested nested2 = GroovyDeepMock()
+
+        when:
+        def res1 = new GroovyCaller(nested1).call()
+        def res2 = new GroovyCaller(nested2).call()
+
+        then:
+        1 * nested2.child.child.name >> 'World'
+        1 * nested1.child.child.name >> 'Hello'
+        0 * _
+
+        expect:
+        res1 == 'Hello'
+        res2 == 'World'
+    }
+
+    def 'calling nested mock'() {
+        setup:
+        def caller = new GroovyCaller(first)
+
+        when:
+        def res = caller.call()
+
+        then:
+        1 * first.child.child.name >> 'Hello'
+        0 * _
+
+        expect:
+        res == 'Hello'
+    }
+
+    def 'calling nested parameter mock'() {
+        setup:
+        def caller = new GroovyCaller(first)
+
+        when:
+        def res = caller.callWithParameters()
+
+        then:
+        1 * first.child('first').child('second').name >> 'Hello'
+        0 * _
 
         expect:
         res == 'Hello'

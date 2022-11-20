@@ -2,6 +2,7 @@ package io.github.joke.spockdeepmock
 
 import groovy.transform.Memoized
 import org.apache.groovy.util.Maps
+import org.spockframework.mock.IMockObject
 import org.spockframework.mock.MockImplementation
 import spock.lang.Specification
 
@@ -19,8 +20,7 @@ class MockCache {
     }
 
     @Memoized(protectedCacheSize = MAX_VALUE)
-    Object createMock(final String name, final Specification specification, final Type exactReturnType, final MockImplementation implementation) {
-        return specification.createMock(name, exactReturnType, MOCK, implementation, Maps.of("defaultResponse", deepMockResponse), null)
+    Object createMock(final IMockObject mockObject, final Specification specification, final Type exactReturnType, final MockImplementation implementation) {
+        return specification.createMock(mockObject.name, exactReturnType, MOCK, implementation, Maps.of("defaultResponse", deepMockResponse), null)
     }
-
 }
