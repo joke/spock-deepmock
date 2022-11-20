@@ -6,27 +6,37 @@ plugins {
 allprojects { project ->
     group 'io.github.joke'
     description 'deep mocking for the spock framework'
+    version rootProject.version
 
     repositories {
         mavenCentral()
     }
 
-    plugins.withType(JavaBasePlugin) {
+    pluginManager.withPlugin('java-base') {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        tasks.withType(JavaCompile) {
+            options.release = 8
+            options.compilerArgs << '-parameters' << '-Werror'
+        }
     }
 
-    plugins.withType(MavenPublishPlugin) {
+    tasks.withType(AbstractArchiveTask) {
+        preserveFileTimestamps = false
+        reproducibleFileOrder = true
+    }
+
+    pluginManager.withPlugin('maven-publish') {
         project.plugins.apply 'signing'
 
-        plugins.withType(JavaPlugin) {
+        pluginManager.withPlugin('java') {
             java {
                 withJavadocJar()
                 withSourcesJar()
             }
         }
 
-        plugins.withType(SigningPlugin) {
+        pluginManager.withPlugin('signing') {
             afterEvaluate {
                 signing {
                     required {
@@ -36,6 +46,8 @@ allprojects { project ->
                     sign publishing.publications
                 }
             }
+
+            tasks.withType(AbstractPublishToMaven)*.mustRunAfter('check')
         }
 
         publishing {
@@ -68,7 +80,7 @@ allprojects { project ->
                             developer {
                                 id = 'joke'
                                 name = 'Joke de Buhr'
-                                email = 'joke@seiken.de'
+                                email = 'joke@xckk.de'
                             }
                         }
                         scm {
