@@ -15,5 +15,5 @@ dependencies {
     api 'net.bytebuddy:byte-buddy:1.12.19'
     api 'org.objenesis:objenesis:3.3'
     api 'org.projectlombok:lombok:1.18.24'
-    api 'org.slf4j:slf4j-simple:2.0.4'
+    api 'org.slf4j:slf4j-simple:2.0.5'
 }
