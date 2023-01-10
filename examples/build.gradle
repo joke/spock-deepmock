@@ -27,14 +27,14 @@ dependencies {
     testImplementation 'org.spockframework:spock-core'
 
     spock20groovy25Implementation enforcedPlatform(project(':dependencies'))
-    spock20groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.19')
+    spock20groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.20')
     spock20groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.0-groovy-2.5')
     spock20groovy25Implementation project(':spock-deepmock')
     spock20groovy25Implementation 'org.slf4j:slf4j-simple'
     spock20groovy25Implementation 'org.spockframework:spock-core'
 
     spock20groovy30Implementation enforcedPlatform(project(':dependencies'))
-    spock20groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
+    spock20groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.20')
     spock20groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.0-groovy-3.0')
     spock20groovy30Implementation project(':spock-deepmock')
     spock20groovy30Implementation 'org.slf4j:slf4j-simple'
