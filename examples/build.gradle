@@ -27,35 +27,35 @@ dependencies {
     testImplementation 'org.spockframework:spock-core'
 
     spock20groovy25Implementation enforcedPlatform(project(':dependencies'))
-    spock20groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.19')
+    spock20groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.22')
     spock20groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.0-groovy-2.5')
     spock20groovy25Implementation project(':spock-deepmock')
     spock20groovy25Implementation 'org.slf4j:slf4j-simple'
     spock20groovy25Implementation 'org.spockframework:spock-core'
 
     spock20groovy30Implementation enforcedPlatform(project(':dependencies'))
-    spock20groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
+    spock20groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.22')
     spock20groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.0-groovy-3.0')
     spock20groovy30Implementation project(':spock-deepmock')
     spock20groovy30Implementation 'org.slf4j:slf4j-simple'
     spock20groovy30Implementation 'org.spockframework:spock-core'
 
     spock21groovy25Implementation enforcedPlatform(project(':dependencies'))
-    spock21groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.19')
+    spock21groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.22')
     spock21groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.1-groovy-2.5')
     spock21groovy25Implementation project(':spock-deepmock')
     spock21groovy25Implementation 'org.slf4j:slf4j-simple'
     spock21groovy25Implementation 'org.spockframework:spock-core'
 
     spock21groovy30Implementation enforcedPlatform(project(':dependencies'))
-    spock21groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
+    spock21groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.22')
     spock21groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.1-groovy-3.0')
     spock21groovy30Implementation project(':spock-deepmock')
     spock21groovy30Implementation 'org.slf4j:slf4j-simple'
     spock21groovy30Implementation 'org.spockframework:spock-core'
 
     spock22groovy25Implementation enforcedPlatform(project(':dependencies'))
-    spock22groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.19')
+    spock22groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.22')
     spock22groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.2-groovy-2.5')
     spock22groovy25Implementation project(':spock-deepmock')
     spock22groovy25Implementation 'net.bytebuddy:byte-buddy'
@@ -63,7 +63,7 @@ dependencies {
     spock22groovy25Implementation 'org.spockframework:spock-core'
 
     spock22groovy30Implementation enforcedPlatform(project(':dependencies'))
-    spock22groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
+    spock22groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.22')
     spock22groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.2-groovy-3.0')
     spock22groovy30Implementation project(':spock-deepmock')
     spock22groovy30Implementation 'net.bytebuddy:byte-buddy'
@@ -79,7 +79,7 @@ dependencies {
     spock22groovy40Implementation 'org.spockframework:spock-core'
 
     spock23groovy25Implementation enforcedPlatform(project(':dependencies'))
-    spock23groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.19')
+    spock23groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.22')
     spock23groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.3-groovy-2.5')
     spock23groovy25Implementation project(':spock-deepmock')
     spock23groovy25Implementation 'net.bytebuddy:byte-buddy'
@@ -87,7 +87,7 @@ dependencies {
     spock23groovy25Implementation 'org.spockframework:spock-core'
 
     spock23groovy30Implementation enforcedPlatform(project(':dependencies'))
-    spock23groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
+    spock23groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.22')
     spock23groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.3-groovy-3.0')
     spock23groovy30Implementation project(':spock-deepmock')
     spock23groovy30Implementation 'net.bytebuddy:byte-buddy'
