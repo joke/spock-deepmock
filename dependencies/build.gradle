@@ -12,7 +12,7 @@ dependencies {
 
     api 'com.google.auto.service:auto-service-annotations:1.0.1'
     api 'com.google.auto.service:auto-service:1.0.1'
-    api 'net.bytebuddy:byte-buddy:1.14.3'
+    api 'net.bytebuddy:byte-buddy:1.14.4'
     api 'org.objenesis:objenesis:3.3'
     api 'org.projectlombok:lombok:1.18.26'
     api 'org.slf4j:slf4j-simple:2.0.7'
