@@ -18,6 +18,6 @@ jobs:
         java-version: 17
         distribution: zulu
     - name: gradle setup
-      uses: gradle/gradle-build-action@v2
+      uses: gradle/gradle-build-action@v3
     - name: build
       run: ./gradlew check
