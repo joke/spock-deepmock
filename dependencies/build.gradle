@@ -7,7 +7,7 @@ javaPlatform {
 }
 
 dependencies {
-    api platform('org.apache.groovy:groovy-bom:4.0.6')
+    api platform('org.apache.groovy:groovy-bom:5.0.2')
     api platform('org.spockframework:spock-bom:2.3-groovy-4.0')
 
     api 'com.google.auto.service:auto-service-annotations:1.1.1'
