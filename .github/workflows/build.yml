@@ -27,5 +27,6 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: rests
-        path: '**/test-results/test/TEST-*xml'
+        # The examples run their tests in per-matrix tasks (e.g. testspock24groovy40), not in `test`.
+        path: '**/test-results/*/TEST-*.xml'
         reporter: java-junit
