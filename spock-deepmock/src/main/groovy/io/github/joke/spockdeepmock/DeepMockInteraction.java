@@ -12,6 +12,7 @@ import org.spockframework.util.UnreachableCodeError;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.Collections.emptyList;
@@ -49,8 +50,8 @@ class DeepMockInteraction implements IMockInteraction {
     }
 
     @Override
-    public Object accept(final IMockInvocation invocation) {
-        return this.mock;
+    public Supplier<Object> accept(final IMockInvocation invocation) {
+        return () -> this.mock;
     }
 
     @Override

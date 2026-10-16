@@ -1,0 +1,71 @@
+plugins {
+    id 'io.github.joke.conventional-version'
+}
+
+group = 'io.github.joke'
+description = 'deep mocking for the spock framework'
+
+repositories {
+    mavenCentral()
+}
+
+pluginManager.withPlugin('java-base') {
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    tasks.withType(JavaCompile).configureEach {
+        options.release = 8
+        options.encoding = 'UTF-8'
+        options.compilerArgs += ['-parameters', '-Werror']
+    }
+    tasks.withType(Javadoc).configureEach {
+        options.encoding = 'UTF-8'
+    }
+    tasks.withType(AbstractArchiveTask).configureEach {
+        preserveFileTimestamps = false
+        reproducibleFileOrder = true
+    }
+}
+
+pluginManager.withPlugin('java') {
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+}
+
+pluginManager.withPlugin('maven-publish') {
+    pluginManager.apply 'io.github.sgtsilvio.gradle.metadata'
+    pluginManager.apply 'signing'
+}
+
+pluginManager.withPlugin('io.github.sgtsilvio.gradle.metadata') {
+    metadata {
+        readableName = project.name
+        license {
+            shortName = 'Apache License, Version 2.0'
+            url = 'https://www.apache.org/licenses/LICENSE-2.0'
+        }
+        developers {
+            register('joke') {
+                fullName = 'Joke de Buhr'
+                email = 'joke@xckk.de'
+            }
+        }
+        github {
+            org = 'joke'
+            repo = rootProject.name
+            issues()
+        }
+    }
+}
+
+pluginManager.withPlugin('signing') {
+    signing {
+        useGpgCmd()
+    }
+    pluginManager.withPlugin('maven-publish') {
+        publishing.publications.configureEach { signing.sign(it) }
+    }
+}

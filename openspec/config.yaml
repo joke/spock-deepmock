@@ -2,3 +2,12 @@ schema: spec-driven
 
 context: |
   An extension for the spock framework to support deep mocking.
+
+rules:
+  design:
+  - Use Simplified Technical English (ASD-STE100)
+  - Prefer mermaid diagrams in all markdown files
+  - Include mermaid diagrams for complex flows
+  tasks:
+  - Use Simplified Technical English (ASD-STE100)
+  - Always add a final task to run `./gradlew check` to verify everything. NEVER continue if there are violations!

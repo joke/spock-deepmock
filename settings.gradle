@@ -1,3 +1,15 @@
+plugins {
+    id 'com.gradleup.nmcp.settings' version '1.6.2'
+}
+
+nmcpSettings {
+    centralPortal {
+        username = providers.gradleProperty('mavenCentralUsername')
+        password = providers.gradleProperty('mavenCentralPassword')
+        publishingType = 'AUTOMATIC'
+    }
+}
+
 rootProject.name = 'spock-deepmock'
 
 include 'examples'

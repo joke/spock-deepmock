@@ -3,20 +3,16 @@ plugins {
     id 'groovy'
     id 'signing'
     id 'maven-publish'
-}
-
-java {
-    withJavadocJar()
-    withSourcesJar()
+    id 'spock-deepmock.conventions'
 }
 
 dependencies {
-    annotationProcessor enforcedPlatform(project(':dependencies'))
+    annotationProcessor enforcedPlatform(project(path: ':dependencies'))
     annotationProcessor 'com.google.auto.service:auto-service'
 
-    compileOnly enforcedPlatform(project(':dependencies'))
+    compileOnly enforcedPlatform(project(path: ':dependencies'))
     compileOnly platform('org.apache.groovy:groovy-bom:4.0.6')
-    compileOnly platform('org.spockframework:spock-bom:2.3-groovy-4.0')
+    compileOnly platform('org.spockframework:spock-bom:2.4-groovy-4.0')
     compileOnly 'com.google.auto.service:auto-service-annotations'
     compileOnly 'org.spockframework:spock-core'
 }

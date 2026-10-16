@@ -2,7 +2,7 @@
 
 :icons: font
 
-image:https://github.com/joke/spock-deepmock/workflows/build/badge.svg?branch=master[]
+image:https://github.com/joke/spock-deepmock/workflows/build/badge.svg?branch=main[]
 image:https://img.shields.io/github/license/joke/spring-factory[GitHub]
 image:https://img.shields.io/maven-central/v/io.github.joke/spock-deepmock?label=latest%20version[link=https://search.maven.org/artifact/io.github.joke/spock-deepmock]
 image:https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg[link=https://conventionalcommits.org]
@@ -18,7 +18,7 @@ is no need to define chains of nested mocks.
 * Build deep mocking chains for nested objects
 * Uses same syntax as the builtins `Mock()` and `GroovyMock()`
 * Supports interaction verification
-* Works with Spock Framework 2.0, 2.1, 2.2 and 2.3
+* Works with Spock Framework 2.4 (on Groovy 4.0)
 
 == Gradle Dependency
 

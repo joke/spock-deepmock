@@ -1,17 +1,15 @@
 plugins {
     id 'java'
     id 'groovy'
+    id 'spock-deepmock.conventions'
 }
 
 def spock2x = [
-        'spock20groovy25', 'spock20groovy30',
-        'spock21groovy25', 'spock21groovy30',
-        'spock22groovy25', 'spock22groovy30', 'spock22groovy40',
-        'spock23groovy25', 'spock23groovy30', 'spock23groovy40'
+        'spock24groovy40'
 ]
 
 [*spock2x].forEach {
-    sourceSets.create(it) {
+    sourceSets.register(it) {
         java.srcDirs += sourceSets.main.java.srcDirs
         groovy.srcDirs += sourceSets.main.groovy.srcDirs
         groovy.srcDirs += sourceSets.test.groovy.srcDirs
@@ -19,107 +17,41 @@ def spock2x = [
 }
 
 dependencies {
-    implementation enforcedPlatform(project(':dependencies'))
+    implementation enforcedPlatform(project(path: ':dependencies'))
     implementation 'org.apache.groovy:groovy'
 
-    testImplementation project(':spock-deepmock')
+    testImplementation project(path: ':spock-deepmock')
     testImplementation 'org.slf4j:slf4j-simple'
     testImplementation 'org.spockframework:spock-core'
 
-    spock20groovy25Implementation enforcedPlatform(project(':dependencies'))
-    spock20groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.19')
-    spock20groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.0-groovy-2.5')
-    spock20groovy25Implementation project(':spock-deepmock')
-    spock20groovy25Implementation 'org.slf4j:slf4j-simple'
-    spock20groovy25Implementation 'org.spockframework:spock-core'
-
-    spock20groovy30Implementation enforcedPlatform(project(':dependencies'))
-    spock20groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
-    spock20groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.0-groovy-3.0')
-    spock20groovy30Implementation project(':spock-deepmock')
-    spock20groovy30Implementation 'org.slf4j:slf4j-simple'
-    spock20groovy30Implementation 'org.spockframework:spock-core'
-
-    spock21groovy25Implementation enforcedPlatform(project(':dependencies'))
-    spock21groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.19')
-    spock21groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.1-groovy-2.5')
-    spock21groovy25Implementation project(':spock-deepmock')
-    spock21groovy25Implementation 'org.slf4j:slf4j-simple'
-    spock21groovy25Implementation 'org.spockframework:spock-core'
-
-    spock21groovy30Implementation enforcedPlatform(project(':dependencies'))
-    spock21groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
-    spock21groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.1-groovy-3.0')
-    spock21groovy30Implementation project(':spock-deepmock')
-    spock21groovy30Implementation 'org.slf4j:slf4j-simple'
-    spock21groovy30Implementation 'org.spockframework:spock-core'
-
-    spock22groovy25Implementation enforcedPlatform(project(':dependencies'))
-    spock22groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.19')
-    spock22groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.2-groovy-2.5')
-    spock22groovy25Implementation project(':spock-deepmock')
-    spock22groovy25Implementation 'net.bytebuddy:byte-buddy'
-    spock22groovy25Implementation 'org.slf4j:slf4j-simple'
-    spock22groovy25Implementation 'org.spockframework:spock-core'
-
-    spock22groovy30Implementation enforcedPlatform(project(':dependencies'))
-    spock22groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
-    spock22groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.2-groovy-3.0')
-    spock22groovy30Implementation project(':spock-deepmock')
-    spock22groovy30Implementation 'net.bytebuddy:byte-buddy'
-    spock22groovy30Implementation 'org.slf4j:slf4j-simple'
-    spock22groovy30Implementation 'org.spockframework:spock-core'
-
-    spock22groovy40Implementation enforcedPlatform(project(':dependencies'))
-    spock22groovy40Implementation enforcedPlatform('org.apache.groovy:groovy-bom:4.0.6')
-    spock22groovy40Implementation enforcedPlatform('org.spockframework:spock-bom:2.2-groovy-4.0')
-    spock22groovy40Implementation project(':spock-deepmock')
-    spock22groovy40Implementation 'net.bytebuddy:byte-buddy'
-    spock22groovy40Implementation 'org.slf4j:slf4j-simple'
-    spock22groovy40Implementation 'org.spockframework:spock-core'
-
-    spock23groovy25Implementation enforcedPlatform(project(':dependencies'))
-    spock23groovy25Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:2.5.19')
-    spock23groovy25Implementation enforcedPlatform('org.spockframework:spock-bom:2.3-groovy-2.5')
-    spock23groovy25Implementation project(':spock-deepmock')
-    spock23groovy25Implementation 'net.bytebuddy:byte-buddy'
-    spock23groovy25Implementation 'org.slf4j:slf4j-simple'
-    spock23groovy25Implementation 'org.spockframework:spock-core'
-
-    spock23groovy30Implementation enforcedPlatform(project(':dependencies'))
-    spock23groovy30Implementation enforcedPlatform('org.codehaus.groovy:groovy-bom:3.0.13')
-    spock23groovy30Implementation enforcedPlatform('org.spockframework:spock-bom:2.3-groovy-3.0')
-    spock23groovy30Implementation project(':spock-deepmock')
-    spock23groovy30Implementation 'net.bytebuddy:byte-buddy'
-    spock23groovy30Implementation 'org.slf4j:slf4j-simple'
-    spock23groovy30Implementation 'org.spockframework:spock-core'
-
-    spock23groovy40Implementation enforcedPlatform(project(':dependencies'))
-    spock23groovy40Implementation enforcedPlatform('org.apache.groovy:groovy-bom:4.0.6')
-    spock23groovy40Implementation enforcedPlatform('org.spockframework:spock-bom:2.3-groovy-4.0')
-    spock23groovy40Implementation project(':spock-deepmock')
-    spock23groovy40Implementation 'net.bytebuddy:byte-buddy'
-    spock23groovy40Implementation 'org.slf4j:slf4j-simple'
-    spock23groovy40Implementation 'org.spockframework:spock-core'
+    spock24groovy40Implementation platform(project(path: ':dependencies'))
+    spock24groovy40Implementation enforcedPlatform('org.apache.groovy:groovy-bom:4.0.6')
+    spock24groovy40Implementation enforcedPlatform('org.spockframework:spock-bom:2.4-groovy-4.0')
+    spock24groovy40Implementation project(path: ':spock-deepmock')
+    spock24groovy40Implementation 'net.bytebuddy:byte-buddy'
+    spock24groovy40Implementation 'org.slf4j:slf4j-simple'
+    spock24groovy40Implementation 'org.spockframework:spock-core'
+    spock24groovy40RuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 spock2x.forEach { source ->
-    tasks.create("test$source", Test) { test ->
+    tasks.register("test$source", Test) { test ->
         group = 'verification'
 
-        testClassesDirs = sourceSets.findByName(source).output.classesDirs
-        classpath = sourceSets.findByName(source).runtimeClasspath
+        def set = sourceSets.named(source).get()
+        testClassesDirs = set.output.classesDirs
+        classpath = set.runtimeClasspath
 
         useJUnitPlatform()
-        check.dependsOn "test$source"
     }
+    check.dependsOn "test$source"
 }
 
 test {
     enabled = false
 }
 
-tasks.withType(GroovyCompile) {
+tasks.withType(GroovyCompile).configureEach {
 //    groovyOptions.fork = true
 //    groovyOptions.forkOptions.jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y']
 }

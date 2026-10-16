@@ -2,44 +2,48 @@ name: release
 
 on:
   push:
-    branches:
-    - main
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-    - uses: GoogleCloudPlatform/release-please-action@v4.4
+    - uses: GoogleCloudPlatform/release-please-action@v5.0
       id: release
       with:
-        release-type: simple
         signoff: Joke de Buhr <joke@xckk.de>
         token: ${{ secrets.RELEASE_PLEASE }}
 
+  # Publishes to Maven Central only when release-please actually cut a release (release_created) - an
+  # ordinary push to main that merely updates the pending release PR never reaches this job, and no
+  # -SNAPSHOT version is ever published.
   publish:
     needs: release-please
-    runs-on: ubuntu-latest
     if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         ref: ${{ needs.release-please.outputs.tag_name }}
-    - uses: crazy-max/ghaction-import-gpg@v6
+        fetch-depth: 0
+    - uses: jdx/mise-action@v4
+    - uses: crazy-max/ghaction-import-gpg@v7
       with:
         gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-    - uses: actions/setup-java@v4
-      with:
-        java-version: 17
-        distribution: zulu
-    - name: build
-      run: ./gradlew check
-    - name: publish
-      run: ./gradlew publish
+        passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        fingerprint: ${{ secrets.GPG_FINGERPRINT }}
+    - uses: gradle/actions/setup-gradle@v6
+    - run: ./gradlew publishAggregationToCentralPortal
       env:
-        ORG_GRADLE_PROJECT_OSSRHUsername: ${{ secrets.OSSRH_USERNAME }}
-        ORG_GRADLE_PROJECT_OSSRHPassword: ${{ secrets.OSSRH_TOKEN }}
-        ORG_GRADLE_PROJECT_GitHubPackagesUsername: ${{ secrets.GITHUB_ACTOR }}
-        ORG_GRADLE_PROJECT_GitHubPackagesPassword: ${{ secrets.GITHUB_TOKEN }}
+        ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.mavenCentralUsername }}
+        ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.mavenCentralPassword }}

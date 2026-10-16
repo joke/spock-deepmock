@@ -4,12 +4,13 @@ import groovy.transform.Memoized
 import org.apache.groovy.util.Maps
 import org.spockframework.mock.IMockObject
 import org.spockframework.mock.MockImplementation
+import org.spockframework.runtime.SpecInternals
 import spock.lang.Specification
 
 import java.lang.reflect.Type
 
 import static java.lang.Integer.MAX_VALUE
-import static org.spockframework.mock.MockNature.MOCK
+import static org.spockframework.mock.MockImplementation.GROOVY
 
 class MockCache {
 
@@ -21,6 +22,9 @@ class MockCache {
 
     @Memoized(protectedCacheSize = MAX_VALUE)
     Object createMock(final IMockObject mockObject, final Specification specification, final Type exactReturnType, final MockImplementation implementation) {
-        return specification.createMock(mockObject.name, exactReturnType, MOCK, implementation, Maps.of("defaultResponse", deepMockResponse), null)
+        final options = Maps.of("defaultResponse", deepMockResponse)
+        return implementation == GROOVY
+                ? SpecInternals.GroovyMockImpl(specification, mockObject.name, exactReturnType, options)
+                : SpecInternals.MockImpl(specification, mockObject.name, exactReturnType, options)
     }
 }

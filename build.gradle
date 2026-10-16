@@ -1,101 +1,19 @@
 plugins {
     id 'idea'
-    id 'org.shipkit.shipkit-auto-version' version '2.0.9'
 }
 
-allprojects { project ->
-    group 'io.github.joke'
-    description 'deep mocking for the spock framework'
-    version rootProject.version
-
-    repositories {
-        mavenCentral()
-    }
-
-    pluginManager.withPlugin('java-base') {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-        tasks.withType(JavaCompile) {
-            options.release = 8
-            options.compilerArgs << '-parameters' << '-Werror'
-        }
-    }
-
-    tasks.withType(AbstractArchiveTask) {
-        preserveFileTimestamps = false
-        reproducibleFileOrder = true
-    }
-
-    pluginManager.withPlugin('maven-publish') {
-        project.plugins.apply 'signing'
-
-        pluginManager.withPlugin('java') {
-            java {
-                withJavadocJar()
-                withSourcesJar()
-            }
-        }
-
-        pluginManager.withPlugin('signing') {
-            afterEvaluate {
-                signing {
-                    required {
-                        gradle.taskGraph.hasTask('publish')
-                    }
-                    useGpgCmd()
-                    sign publishing.publications
-                }
-            }
-
-            tasks.withType(AbstractPublishToMaven)*.mustRunAfter('check')
-        }
-
-        publishing {
-            repositories {
-                maven {
-                    name = 'OSSRH'
-                    url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-                    credentials(PasswordCredentials)
-                }
-                maven {
-                    name = 'GitHubPackages'
-                    url = uri("https://maven.pkg.github.com/joke/${project.name}")
-                    credentials(PasswordCredentials)
-                }
-            }
-            afterEvaluate {
-                tasks.withType(AbstractPublishToMaven)*.dependsOn(check)
-                publications.each { publication ->
-                    publication.pom {
-                        name = project.name
-                        description = project.description
-                        url = "https://github.com/joke/${project.name}"
-                        licenses {
-                            license {
-                                name = 'Apache License, Version 2.0'
-                                url = 'https://www.apache.org/licenses/LICENSE-2.0'
-                            }
-                        }
-                        developers {
-                            developer {
-                                id = 'joke'
-                                name = 'Joke de Buhr'
-                                email = 'joke@xckk.de'
-                            }
-                        }
-                        scm {
-                            connection = "scm:git:git://github.com/joke/${project.name}.git"
-                            developerConnection = "scm:git:git://github.com/joke/${project.name}.git"
-                            url = "http://github.com/joke/${project.name}/tree/master"
-                        }
-                    }
-                }
-            }
-        }
-    }
+// Every subproject gets its repositories from spock-deepmock.conventions. The root does not apply
+// it, but nmcp adds com.gradleup.nmcp:nmcp-tasks to an 'nmcpTasks' configuration on the root
+// project through the aggregation plugin below, which needs a repository to resolve from.
+repositories {
+    mavenCentral()
 }
 
-wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '7.5.1'
+// com.gradleup.nmcp.settings (applied in settings.gradle) implicitly applies
+// com.gradleup.nmcp.aggregation to this root project - configure the extension it registers
+// here rather than re-applying the plugin.
+nmcpAggregation {
+    // rootProject.name ('spock-deepmock') intentionally collides with the ':spock-deepmock' module's
+    // own project name. Harmless for Central Portal coordinates, which key off group+artifactId.
+    allowDuplicateProjectNames.set(true)
 }

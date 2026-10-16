@@ -1,0 +1,13 @@
+plugins {
+    id 'groovy-gradle-plugin'
+}
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.github.joke.conventional-version:io.github.joke.conventional-version.gradle.plugin:2.1.0'
+    implementation 'io.github.sgtsilvio.gradle:gradle-metadata:0.7.0'
+}

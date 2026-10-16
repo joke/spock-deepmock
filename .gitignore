@@ -1,3 +1,15 @@
 /.idea/
 .gradle/
 build/
+.vscode/
+.worktrees/
+
+bin/
+.project
+.classpath
+.settings
+# Contents rather than the directory itself: git cannot re-include a path below an excluded
+# directory, and repo-owned skills are part of the project's conventions so they are versioned with
+# the code. Everything else under .claude/ stays machine-local (settings.local.json, task locks).
+.claude/*
+!.claude/skills/
