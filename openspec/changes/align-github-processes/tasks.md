@@ -46,5 +46,5 @@
 ## 8. Auto-merge for the maintainer
 
 - [x] 8.1 Add `.github/workflows/automerge.yml`. On a pull request by `joke` that is not a draft, it runs `gh pr merge --auto --rebase`. GitHub then merges once the required checks pass. Other authors, Dependabot and release-please are not matched.
-- [x] 8.2 Set `required_approving_review_count` to 0 and `require_code_owner_reviews` to false in `.github/settings.yml`. Auto-merge waits for the approval rules as well, so a maintainer's PR does not merge while approval is required. Contributor PRs are then merged by a maintainer, as described in the auto-merge section of the proposal.
+- [x] 8.2 Set `required_approving_review_count` to 0 and `require_code_owner_reviews` to false in `.github/settings.yml`. Auto-merge waits for the approval rules as well, so a maintainer's PR does not merge while approval is required. Contributor PRs are then merged by a maintainer, because auto-merge applies only to the maintainer's own PRs.
 - [ ] 8.3 After merge, open a test PR from `joke`, confirm auto-merge is enabled and the PR merges once `build` passes, and confirm that a Dependabot or release-please PR gets no auto-merge.
