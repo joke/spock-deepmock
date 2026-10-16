@@ -1,0 +1,4 @@
+schema: spec-driven
+
+context: |
+  An extension for the spock framework to support deep mocking.
