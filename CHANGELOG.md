@@ -1,5 +1,25 @@
 # Changelog
 
+## [5.0.0](https://github.com/joke/spock-deepmock/compare/v4.0.0...v5.0.0) (2026-10-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* evaluating a chain in an interaction declaration no longer counts invocations. Specifications that compensated for this count must use the real count.
+* an unstubbed call whose return type cannot be mocked (void, primitives, arrays, String, Integer and similar) answers like a Spock Mock(): null, 0 or false. Before, it threw InvalidSpecException or CannotCreateMockException. The mock makers decide whether a type can be mocked, so final classes that a mock maker can mock now return deep mocks.
+* GroovyDeepMock() now creates a Groovy mock. Before, every GroovyDeepMock overload created a Java mock.
+
+### Features
+
+* fall back to Mock() answers and inherit deep mock options ([54d7149](https://github.com/joke/spock-deepmock/commit/54d714974ecf86e33a259569e8fba1ac36bf3320))
+* move deep mocks to Java and fix nested mock identity ([ef6a12f](https://github.com/joke/spock-deepmock/commit/ef6a12fb0821b35e520a64ffdaa557b406323cb3))
+* rewrite DeepMock to Mock at compile time and walk chains quietly ([6f13a79](https://github.com/joke/spock-deepmock/commit/6f13a791f6d8d44acb9781b48e637e22fdd0c901))
+
+
+### Bug Fixes
+
+* **ci:** use the nmcp task names for Central publishing ([abff9cf](https://github.com/joke/spock-deepmock/commit/abff9cfe5e275fdb9a115ad4768a17cae5f79bb7))
+
 ## [4.0.0](https://github.com/joke/spock-deepmock/compare/v3.0.0...v4.0.0) (2022-11-20)
 
 
