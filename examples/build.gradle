@@ -32,6 +32,8 @@ dependencies {
     spock24groovy40Implementation 'org.mockito:mockito-core'
     spock24groovy40Implementation 'org.slf4j:slf4j-simple'
     spock24groovy40Implementation 'org.spockframework:spock-core'
+    // EmbeddedSpecRunner needs the JUnit testkit, which spock-core does not declare.
+    spock24groovy40Implementation 'org.junit.platform:junit-platform-testkit'
     spock24groovy40RuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

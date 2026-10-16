@@ -55,7 +55,7 @@ dependencies {
 
 == Usage
 
-Deep mocks can be defined as any other mock. Features like options are supported.
+`DeepMock()` and `GroovyDeepMock()` accept all argument forms and options of `Mock()` and `GroovyMock()`, except `defaultResponse`, which is rejected.
 
 .Define deep mocks
 [source,groovy]
@@ -65,6 +65,27 @@ Nested mock = DeepMock()
 
 def mock = DeepMock(name: 'customName')
 Nested mock = DeepMock(name: 'customName')
+
+Nested mock = DeepMock(mockMaker: MockMakers.byteBuddy)
+Nested mock = DeepMock(verified: false, Nested)
+Nested mock = DeepMock { name >> 'Fred' }
+Nested mock = DeepMock { it.child.name >> 'Hello' }
+----
+
+A chain in an interaction closure must start with `it.`, as for all Spock mocks.
+Spock adds the mock only in front of a single name such as `name >> 'Fred'`.
+In `child.name >> 'Hello'`, Groovy looks for `child` in the specification and fails with a `MissingPropertyException`.
+
+Options and types can come from variables.
+
+.Options and types from variables
+[source,groovy]
+----
+def options = [name: 'customName']
+Class type = Nested
+
+def mock = DeepMock(type)
+def mock = DeepMock(options, type)
 ----
 
 .CallerTest.groovy
@@ -120,6 +141,37 @@ A nested mock does not inherit these options. They apply to the parent type only
 
 The option `defaultResponse` is rejected.
 
+== Chains and interactions
+
+An interaction on a chain, such as `1 * nested.child.child.name >> 'Hello'`, also declares the steps of the chain as `_ * nested.getChild()` and `_ * nested.getChild().getChild()`. A step is matched like any other interaction, and it never counts invocations. Code under test can therefore make the calls of a declared chain without matching a catch-all interaction.
+
+.Chain with a catch-all
+[source,groovy]
+----
+def 'calling nested mock'() {
+    setup:
+    Nested mock = DeepMock()
+    def caller = new Caller(mock)
+
+    when:
+    def res = caller.call()
+
+    then:
+    1 * mock.child.child.name >> 'Hello'
+    0 * _
+
+    expect:
+    res == 'Hello'
+}
+----
+
+The following rules apply:
+
+* `0 * _` works in any position, before or after a chain.
+* An interaction that verifies a step of a chain must come before the chain. A step verified after the chain fails with a `TooFewInvocationsError`, as it does for a plain Spock `_ *` interaction declared first.
+* A specification must not stub a step to another object and also use a chain through that step. The stub is bypassed while the chain is evaluated.
+* A chain declared only in `given:` does not pass a `0 * _` in `then:`, as for all Spock interactions.
+
 == Migrating from 4.x
 
 * `GroovyDeepMock()` creates a Groovy mock. Before, every `GroovyDeepMock()` overload created a Java mock.
@@ -127,4 +179,5 @@ The option `defaultResponse` is rejected.
 * Nested mocks live as long as the specification instance that created them. Before, one static cache kept them for the whole JVM.
 * A return type that the mock makers cannot mock gets the answer of a `Mock()`. Before, the call threw `CannotCreateMockException`.
 * Nested mocks have path names. Before, every nested mock had the name of the top-level mock.
+* Evaluating a chain in an interaction declaration no longer counts invocations. Specifications that compensated for this count must use the real count.
 * Spock 2.4 is necessary.

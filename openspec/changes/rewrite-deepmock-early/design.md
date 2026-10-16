@@ -35,7 +35,7 @@ See proposal.md for the motivation and specs/deep-mocking/spec.md for the requir
 **Non-Goals:**
 - No change to Spock. A Spock hook for test double methods or for implicit interactions can come later.
 - No Groovy 5 test set. Only `spock24groovy40` runs.
-- No README changes, no deep stubs, no change to the public `DeepMock()` and `GroovyDeepMock()` signatures.
+- No deep stubs, no change to the public `DeepMock()` and `GroovyDeepMock()` signatures.
 
 ## Decisions
 
@@ -133,6 +133,17 @@ sequenceDiagram
 - S2: `enterScope` and `leaveScope` during a declaration do not change Spock's scopes. Check feature methods, fixture methods and field initializers.
 - S3: The recognition of D4 matches `InteractionRewriter` for all forms: count, `>>`, `>>>`, ranges, `_`, method calls and property access.
 - S4: Spock accepts the spread argument of D2 in a `Mock()` call with name and type inference.
+
+## Spike results (D9)
+
+Run on Groovy 4.0 with Spock 2.4, with a throwaway spec that wrapped targets by hand (`SpikeWalk.begin` calls `enterScope`, `SpikeWalk.end` calls `leaveScope`). The spec was deleted after the run.
+
+- **S1 (wrapped targets accepted): passed in part.** Spock compiles and runs a wrapped target in `then:`, `given:`, a `Mock { }` closure and an `interaction { }` block. The `then:` and `interaction { }` cases failed with `TooFewInvocationsError`, because the calls made while evaluating the target counted: this is the reason for the walker of D5, which the spike did not include. Spock builds the interaction text from the source file by node position (`SpecRewriter.getSourceText`), so the text stays original if the rewritten target keeps the source positions of the old one. The spike's hand-written wrapper appeared in the message text because it was in the file; the implementation tests check the text.
+- **S2 (scopes unchanged by enter and leave in declarations): passed.** A field initializer, a `setup()` fixture method and a feature method each ran `enterScope` and `leaveScope` without changing the scopes of the interactions that followed.
+- **S3 (recognition of D4): checked against the Spock source.** `InteractionRewriter.parseResults`, `parseCount` and `parseCall` accept `>>`, `>>>`, a `count *` prefix, and property, method and constructor calls. Wildcards and calls with implicit `this` are not wrapped. D4 follows these rules. The forms are covered by the tests of task 2.1.
+- **S4 (spread argument with inference): passed.** `Mock(*[[defaultResponse: ZeroOrNullResponse.INSTANCE]])` keeps the type from the declaration. The mock name is `spread`, which the spike checked with `MockUtil`. A type held in a variable works through `Mock(*[type])`.
+
+No spike failed in the sense of D9: S1's failing cases come from the missing walker, and the message text depends on the implementation. Both are checked by the implementation tests.
 
 ## Risks / Trade-offs
 

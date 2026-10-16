@@ -33,7 +33,7 @@ An interaction whose target a specification reaches through calls on deep mocks 
 - **THEN** the mock configuration of `nested` names the `byte-buddy` mock maker
 
 #### Scenario: Interaction closure with a chain
-- **WHEN** a specification declares `Nested nested = DeepMock { child.name >> 'Hello' }`
+- **WHEN** a specification declares `Nested nested = DeepMock { it.child.name >> 'Hello' }`
 - **THEN** `nested.child.name` returns `'Hello'`
 
 #### Scenario: Type from a variable

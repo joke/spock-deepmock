@@ -2,21 +2,25 @@ package io.github.joke.spockdeepmock;
 
 import groovy.lang.GroovyObject;
 import lombok.RequiredArgsConstructor;
-import org.codehaus.groovy.runtime.InvokerHelper;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.spockframework.mock.CannotCreateMockException;
+import org.spockframework.mock.IDefaultResponse;
 import org.spockframework.mock.IMockConfiguration;
 import org.spockframework.mock.IMockInvocation;
 import org.spockframework.mock.IMockObject;
 import org.spockframework.mock.MockImplementation;
 import org.spockframework.mock.MockUtil;
 import org.spockframework.runtime.SpecInternals;
+import org.spockframework.runtime.extension.IStore;
 import spock.lang.Specification;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,11 +35,33 @@ class MockCache {
 
     private static final MockUtil MOCK_UTIL = new MockUtil();
 
-    private final DeepMockResponse deepMockResponse;
+    private final IDefaultResponse deepMockResponse;
 
     private final List<DeepMockInteraction> entries = new ArrayList<>();
 
+    private final Map<Object, DeepMockInteraction> entriesByMock = new IdentityHashMap<>();
+
     private final Set<List<Object>> failedCreations = new HashSet<>();
+
+    static MockCache of(final Specification specification) {
+        return specification.getSpecificationContext()
+                .getStore(IStore.Namespace.create(MockCache.class))
+                .getOrComputeIfAbsent(MockCache.class, key -> new MockCache(DeepMockSupport.RESPONSE), MockCache.class);
+    }
+
+    /**
+     * Returns the implicit step interactions of the chain that leads from the root deep mock to the target, root first.
+     * Returns an empty list when the target is not a nested deep mock of this cache.
+     */
+    synchronized List<DeepMockInteraction> pathTo(final Object target) {
+        final LinkedList<DeepMockInteraction> path = new LinkedList<>();
+        DeepMockInteraction entry = entriesByMock.get(target);
+        while (entry != null) {
+            path.addFirst(entry);
+            entry = entriesByMock.get(entry.getParent());
+        }
+        return path;
+    }
 
     synchronized Optional<DeepMockInteraction> findOrCreate(final IMockInvocation invocation) {
         final Optional<DeepMockInteraction> existing = entries.stream()
@@ -61,8 +87,9 @@ class MockCache {
             failedCreations.add(key);
             return Optional.empty();
         }
-        final DeepMockInteraction entry = DeepMockInteraction.create(invocation, mock);
+        final DeepMockInteraction entry = DeepMockInteraction.create(invocation, mock, pathName(invocation));
         entries.add(entry);
+        entriesByMock.put(mock, entry);
         return Optional.of(entry);
     }
 
@@ -91,7 +118,7 @@ class MockCache {
     private static String describe(final Object argument) {
         return MOCK_UTIL.isMock(argument)
                 ? mockName(MOCK_UTIL.asMock(argument))
-                : InvokerHelper.inspect(argument);
+                : DefaultGroovyMethods.inspect(argument);
     }
 
     private static String mockName(final IMockObject mockObject) {
