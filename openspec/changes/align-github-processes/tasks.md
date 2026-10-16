@@ -24,10 +24,10 @@
 
 - [ ] 5.1 Confirm that the next release-please PR is authored by `github-actions`, shows all required checks, and that the `build` job skips it.
 - [ ] 5.2 Confirm that a Dependabot PR passes `build`.
-- [ ] 5.3 Confirm that a push to main that cuts no release runs the `snapshot` job and publishes a `-SNAPSHOT`.
-- [ ] 5.4 Confirm that live branch protection on spock-deepmock lists `build`, `pre-commit.ci - pr` and `Semantic PR`, and no DCO check.
-- [ ] 5.5 Close PR #243 once 5.1 is confirmed.
-- [ ] 5.6 Delete the `RELEASE_PLEASE` secret from spock-deepmock.
+- [x] 5.3 Confirm that a push to main that cuts no release runs the `snapshot` job and publishes a `-SNAPSHOT`.
+- [x] 5.4 Confirm that live branch protection on spock-deepmock lists `build`, `pre-commit.ci - pr` and `Semantic PR`, and no DCO check.
+- [x] 5.5 Close PR #243 once 5.1 is confirmed.
+- [x] 5.6 Delete the `RELEASE_PLEASE` secret from spock-deepmock.
 
 ## 6. Sibling repositories
 
