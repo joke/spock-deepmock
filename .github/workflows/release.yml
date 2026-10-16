@@ -3,6 +3,13 @@ name: release
 on:
   push:
     branches: [main]
+  # Re-publishes a release whose publish job failed. A re-run cannot do that once the workflow has
+  # been fixed, because it reuses the workflow file of the original run.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to publish, e.g. v5.0.0
+        required: true
 
 permissions:
   contents: write
@@ -20,21 +27,19 @@ jobs:
     steps:
     - uses: GoogleCloudPlatform/release-please-action@v5.0
       id: release
-      with:
-        signoff: Joke de Buhr <joke@xckk.de>
-        token: ${{ secrets.RELEASE_PLEASE }}
 
   # Publishes to Maven Central only when release-please actually cut a release (release_created) - an
   # ordinary push to main that merely updates the pending release PR never reaches this job, and no
   # -SNAPSHOT version is ever published.
   publish:
     needs: release-please
-    if: ${{ needs.release-please.outputs.release_created }}
+    if: ${{ needs.release-please.outputs.release_created || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     steps:
+    # On a push, the pushed commit is the one release-please tagged.
     - uses: actions/checkout@v7
       with:
-        ref: ${{ needs.release-please.outputs.tag_name }}
+        ref: ${{ inputs.tag || github.sha }}
         fetch-depth: 0
     - uses: jdx/mise-action@v4
     - uses: crazy-max/ghaction-import-gpg@v7
@@ -44,6 +49,29 @@ jobs:
         fingerprint: ${{ secrets.GPG_FINGERPRINT }}
     - uses: gradle/actions/setup-gradle@v6
     - run: ./gradlew publishAggregationToCentralPortal
+      env:
+        ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.mavenCentralUsername }}
+        ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.mavenCentralPassword }}
+
+  # The complement of `publish`: every push to main that did not cut a release publishes the next
+  # planned version as a snapshot, so main is always consumable. Signs exactly as `publish` does, so
+  # the signing path is tested on every merge.
+  snapshot:
+    needs: release-please
+    if: ${{ github.event_name == 'push' && needs.release-please.outputs.release_created != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        fetch-depth: 0
+    - uses: jdx/mise-action@v4
+    - uses: crazy-max/ghaction-import-gpg@v7
+      with:
+        gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+        passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        fingerprint: ${{ secrets.GPG_FINGERPRINT }}
+    - uses: gradle/actions/setup-gradle@v6
+    - run: ./gradlew publishAggregationToCentralPortalSnapshots
       env:
         ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.mavenCentralUsername }}
         ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.mavenCentralPassword }}

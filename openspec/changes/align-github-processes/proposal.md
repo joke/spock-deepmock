@@ -13,8 +13,8 @@ The release PR for 5.0.0 (#243) was opened under the maintainer's name. The rele
 - `.github/semantic.yml` is kept. Semantic PR stays a required check.
 - Branch protection in `.github/settings.yml` is updated: DCO is removed from required checks; `build`, `pre-commit.ci - pr` and `Semantic PR` remain.
 - Sibling projects receive the same process changes:
-  - percolate: add `.github/semantic.yml`, the Semantic PR required check, and the signoff check in `build`.
-  - pmd-rules: add `.github/semantic.yml`, the Semantic PR and signoff checks in `build`, the release-please token and snapshot changes, and branch protection that matches percolate.
+  - percolate: add `.github/semantic.yml`, the Semantic PR required check, the signoff check and the `chore: release ` build condition in `build`, and the `snapshot` job and `workflow_dispatch` input in `release.yml`.
+  - pmd-rules: add `.github/semantic.yml`, the Semantic PR required check, and the signoff check in `build`. Its `snapshot` job and `workflow_dispatch` input already exist. Branch protection is still missing and is applied through its settings.
 - Existing release PR #243 is closed once the fix is merged, so release-please reopens it under the bot account.
 
 ## Capabilities
