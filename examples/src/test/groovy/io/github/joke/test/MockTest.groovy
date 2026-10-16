@@ -19,6 +19,7 @@ class MockTest extends Specification {
         mockUtil.isMock first
         mockUtil.isMock first.child
         mockUtil.isMock first.child.child
+        mockUtil.asMock(first).name == 'first'
 
         first.name == 'first'
         first.child.name == 'second'
@@ -70,6 +71,7 @@ class MockTest extends Specification {
 
         expect:
         res == 'Hello'
+        mockUtil.asMock(namedMock).name == 'customName'
     }
 
     def 'concurrent mock'() {

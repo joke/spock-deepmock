@@ -1,3 +1,9 @@
+pluginManagement {
+    plugins {
+        id 'io.freefair.lombok' version '9.5.0'
+    }
+}
+
 plugins {
     id 'com.gradleup.nmcp.settings' version '1.6.2'
 }

@@ -1,91 +1,94 @@
 package io.github.joke.spockdeepmock;
 
 import groovy.lang.Closure;
-import org.apache.groovy.util.Maps;
+import lombok.experimental.UtilityClass;
 import org.spockframework.runtime.SpecInternals;
 import spock.lang.Specification;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.spockframework.runtime.GroovyRuntimeUtil.invokeMethod;
+import static java.util.Collections.emptyMap;
 
+@UtilityClass
 public class SpecInternalsExtension {
 
     private final static DeepMockResponse deepMockResponse = new DeepMockResponse();
 
     public static Object DeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse());
+        return SpecInternals.MockImpl(self, inferredName, inferredType, addDefaultResponse());
     }
 
     public static Object DeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Closure<?> closure) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(), closure);
+        return SpecInternals.MockImpl(self, inferredName, inferredType, addDefaultResponse(), closure);
     }
 
     public static Object DeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Map<String, Object> options) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(options));
+        return SpecInternals.MockImpl(self, inferredName, inferredType, addDefaultResponse(options));
     }
 
     public static Object DeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Map<String, Object> options, final Closure<?> closure) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(options), closure);
+        return SpecInternals.MockImpl(self, inferredName, inferredType, addDefaultResponse(options), closure);
     }
 
     public static Object DeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Class<?> specifiedType) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(), specifiedType);
+        return SpecInternals.MockImpl(self, inferredName, inferredType, addDefaultResponse(), specifiedType);
     }
 
     public static Object DeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Class<?> specifiedType, final Closure<?> closure) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(), specifiedType, closure);
+        return SpecInternals.MockImpl(self, inferredName, inferredType, addDefaultResponse(), specifiedType, closure);
     }
 
     public static Object DeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Map<String, Object> options, final Class<?> specifiedType) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(options), specifiedType);
+        return SpecInternals.MockImpl(self, inferredName, inferredType, addDefaultResponse(options), specifiedType);
     }
 
     public static Object DeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Map<String, Object> options, final Class<?> specifiedType, final Closure<?> closure) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(options), specifiedType, closure);
+        return SpecInternals.MockImpl(self, inferredName, inferredType, addDefaultResponse(options), specifiedType, closure);
     }
 
     public static Object GroovyDeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse());
+        return SpecInternals.GroovyMockImpl(self, inferredName, inferredType, addDefaultResponse());
     }
 
     public static Object GroovyDeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Closure<?> closure) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(), closure);
+        return SpecInternals.GroovyMockImpl(self, inferredName, inferredType, addDefaultResponse(), closure);
     }
 
     public static Object GroovyDeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Map<String, Object> options) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(options));
+        return SpecInternals.GroovyMockImpl(self, inferredName, inferredType, addDefaultResponse(options));
     }
 
     public static Object GroovyDeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Map<String, Object> options, final Closure<?> closure) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(options), closure);
+        return SpecInternals.GroovyMockImpl(self, inferredName, inferredType, addDefaultResponse(options), closure);
     }
 
     public static Object GroovyDeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Class<?> specifiedType) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(), specifiedType);
+        return SpecInternals.GroovyMockImpl(self, inferredName, inferredType, addDefaultResponse(), specifiedType);
     }
 
     public static Object GroovyDeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Class<?> specifiedType, final Closure<?> closure) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(), specifiedType, closure);
+        return SpecInternals.GroovyMockImpl(self, inferredName, inferredType, addDefaultResponse(), specifiedType, closure);
     }
 
     public static Object GroovyDeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Map<String, Object> options, final Class<?> specifiedType) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(options), specifiedType);
+        return SpecInternals.GroovyMockImpl(self, inferredName, inferredType, addDefaultResponse(options), specifiedType);
     }
 
     public static Object GroovyDeepMockImpl(final Class<?> owner, final Specification self, final String inferredName, final Class<?> inferredType, final Map<String, Object> options, final Class<?> specifiedType, final Closure<?> closure) {
-        return invokeMethod(SpecInternals.class, "MockImpl", self, inferredName, inferredType, addDefaultResponse(options), specifiedType, closure);
+        return SpecInternals.GroovyMockImpl(self, inferredName, inferredType, addDefaultResponse(options), specifiedType, closure);
     }
 
     private static Map<String, Object> addDefaultResponse(final Map<String, Object> options) {
         if (options.containsKey("defaultResponse")) {
             throw new UnsupportedOperationException("DeepMocks with default response are not supported.");
         }
-        options.put("defaultResponse", deepMockResponse);
-        return options;
+        final Map<String, Object> copy = new LinkedHashMap<>(options);
+        copy.put("defaultResponse", deepMockResponse);
+        return copy;
     }
 
     private static Map<String, Object> addDefaultResponse() {
-        return Maps.of("defaultResponse", deepMockResponse);
+        return addDefaultResponse(emptyMap());
     }
 }

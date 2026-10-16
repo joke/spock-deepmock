@@ -21,4 +21,16 @@ public class Nested {
         return child;
     }
 
+    public Nested sibling() {
+        return child;
+    }
+
+    public Nested lookup(final String key) {
+        return child;
+    }
+
+    public Object lookup(final Object key) {
+        return child;
+    }
+
 }

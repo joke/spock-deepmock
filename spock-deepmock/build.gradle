@@ -1,26 +1,21 @@
 plugins {
     id 'java-library'
-    id 'groovy'
     id 'signing'
     id 'maven-publish'
+    id 'io.freefair.lombok'
     id 'spock-deepmock.conventions'
 }
 
 dependencies {
     annotationProcessor enforcedPlatform(project(path: ':dependencies'))
-    annotationProcessor 'com.google.auto.service:auto-service'
+    annotationProcessor 'org.projectlombok:lombok'
 
     compileOnly enforcedPlatform(project(path: ':dependencies'))
+    compileOnly 'org.projectlombok:lombok'
     compileOnly platform('org.apache.groovy:groovy-bom:4.0.6')
     compileOnly platform('org.spockframework:spock-bom:2.4-groovy-4.0')
-    compileOnly 'com.google.auto.service:auto-service-annotations'
     compileOnly 'org.spockframework:spock-core'
 }
-
-//sourceSets.main {
-//    java.srcDirs = [src/main/java']
-//    groovy.srcDirs = ['src/main/groovy', 'src/main/java']
-//}
 
 publishing {
     publications {

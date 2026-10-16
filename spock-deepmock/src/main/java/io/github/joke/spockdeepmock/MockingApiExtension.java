@@ -16,6 +16,7 @@ package io.github.joke.spockdeepmock;
 
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import lombok.experimental.UtilityClass;
 import groovy.lang.Singleton;
 import groovy.transform.NamedParam;
 import groovy.transform.NamedParams;
@@ -36,6 +37,7 @@ import static groovy.lang.Closure.DELEGATE_FIRST;
  * Extends the {@link spock.mock.MockingApi} with Deep*Mock methods
  */
 // copied and extended from spock.mock.MockingApi
+@UtilityClass
 public class MockingApiExtension {
 
     /**

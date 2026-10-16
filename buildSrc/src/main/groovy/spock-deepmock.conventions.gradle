@@ -35,6 +35,12 @@ pluginManager.withPlugin('java') {
     }
 }
 
+pluginManager.withPlugin('io.freefair.lombok') {
+    lombok {
+        version = '1.18.46'
+    }
+}
+
 pluginManager.withPlugin('maven-publish') {
     pluginManager.apply 'io.github.sgtsilvio.gradle.metadata'
     pluginManager.apply 'signing'

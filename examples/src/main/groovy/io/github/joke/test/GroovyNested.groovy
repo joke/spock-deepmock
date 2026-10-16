@@ -13,4 +13,16 @@ class GroovyNested {
     GroovyNested child(final String name) {
         child
     }
+
+    GroovyNested sibling() {
+        child
+    }
+
+    GroovyNested lookup(final String key) {
+        child
+    }
+
+    Object lookup(final Object key) {
+        child
+    }
 }
