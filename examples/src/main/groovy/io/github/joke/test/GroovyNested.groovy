@@ -25,4 +25,27 @@ class GroovyNested {
     Object lookup(final Object key) {
         child
     }
+
+    void close() {
+    }
+
+    int size() {
+        0
+    }
+
+    boolean isEnabled() {
+        false
+    }
+
+    Integer code() {
+        0
+    }
+
+    List<GroovyNested> children() {
+        []
+    }
+
+    GroovyFinalLeaf leaf() {
+        new GroovyFinalLeaf()
+    }
 }

@@ -29,6 +29,7 @@ dependencies {
     spock24groovy40Implementation enforcedPlatform('org.spockframework:spock-bom:2.4-groovy-4.0')
     spock24groovy40Implementation project(path: ':spock-deepmock')
     spock24groovy40Implementation 'net.bytebuddy:byte-buddy'
+    spock24groovy40Implementation 'org.mockito:mockito-core'
     spock24groovy40Implementation 'org.slf4j:slf4j-simple'
     spock24groovy40Implementation 'org.spockframework:spock-core'
     spock24groovy40RuntimeOnly 'org.junit.platform:junit-platform-launcher'

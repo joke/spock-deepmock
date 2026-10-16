@@ -4,10 +4,12 @@ import org.spockframework.mock.DefaultJavaLangObjectInteractions;
 import org.spockframework.mock.IDefaultResponse;
 import org.spockframework.mock.IMockInteraction;
 import org.spockframework.mock.IMockInvocation;
+import org.spockframework.mock.ZeroOrNullResponse;
 import org.spockframework.mock.runtime.MockController;
 import org.spockframework.runtime.extension.IStore;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 class DeepMockResponse implements IDefaultResponse {
 
@@ -16,9 +18,24 @@ class DeepMockResponse implements IDefaultResponse {
         if (interaction != null) {
             return interaction.accept(invocation).get();
         }
-        final DeepMockInteraction entry = mockCache(invocation).findOrCreate(invocation);
-        addInteraction(invocation, entry);
-        return entry.accept(invocation).get();
+        if (isNeverMockable(invocation)) {
+            return fallback(invocation);
+        }
+        final Optional<DeepMockInteraction> entry = mockCache(invocation).findOrCreate(invocation);
+        if (!entry.isPresent()) {
+            return fallback(invocation);
+        }
+        addInteraction(invocation, entry.get());
+        return entry.get().accept(invocation).get();
+    }
+
+    private static boolean isNeverMockable(final IMockInvocation invocation) {
+        final Class<?> returnType = invocation.getMethod().getReturnType();
+        return returnType.isPrimitive() || returnType.isArray();
+    }
+
+    private static Object fallback(final IMockInvocation invocation) {
+        return ZeroOrNullResponse.INSTANCE.respond(invocation);
     }
 
     private MockCache mockCache(final IMockInvocation invocation) {

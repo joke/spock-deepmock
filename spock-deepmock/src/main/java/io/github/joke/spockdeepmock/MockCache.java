@@ -2,82 +2,105 @@ package io.github.joke.spockdeepmock;
 
 import groovy.lang.GroovyObject;
 import lombok.RequiredArgsConstructor;
+import org.codehaus.groovy.runtime.InvokerHelper;
+import org.spockframework.mock.CannotCreateMockException;
+import org.spockframework.mock.IMockConfiguration;
 import org.spockframework.mock.IMockInvocation;
 import org.spockframework.mock.IMockObject;
 import org.spockframework.mock.MockImplementation;
-import org.spockframework.runtime.InvalidSpecException;
+import org.spockframework.mock.MockUtil;
 import org.spockframework.runtime.SpecInternals;
 import spock.lang.Specification;
 
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
-import static java.util.Collections.singletonMap;
+import static java.util.stream.Collectors.joining;
 import static org.spockframework.mock.MockImplementation.GROOVY;
 import static org.spockframework.mock.MockImplementation.JAVA;
 
 @RequiredArgsConstructor
 class MockCache {
 
+    private static final MockUtil MOCK_UTIL = new MockUtil();
+
     private final DeepMockResponse deepMockResponse;
 
     private final List<DeepMockInteraction> entries = new ArrayList<>();
 
-    synchronized DeepMockInteraction findOrCreate(final IMockInvocation invocation) {
-        return entries.stream()
+    private final Set<List<Object>> failedCreations = new HashSet<>();
+
+    synchronized Optional<DeepMockInteraction> findOrCreate(final IMockInvocation invocation) {
+        final Optional<DeepMockInteraction> existing = entries.stream()
                 .filter(entry -> entry.matches(invocation))
-                .findFirst()
-                .orElseGet(() -> create(invocation));
+                .findFirst();
+        return existing.isPresent() ? existing : create(invocation);
     }
 
-    private DeepMockInteraction create(final IMockInvocation invocation) {
-        requireMockable(invocation);
+    private Optional<DeepMockInteraction> create(final IMockInvocation invocation) {
         final IMockObject mockObject = invocation.getMockObject();
         final Specification specification = mockObject.getSpecification();
         final Type exactReturnType = invocation.getMethod().getExactReturnType();
-        final Object mock = newMock(mockObject, specification, exactReturnType, implementationOf(invocation));
+        final MockImplementation implementation = implementationOf(invocation);
+        final Map<String, Object> options = nestedOptions(mockObject.getConfiguration());
+        final List<Object> key = Arrays.asList(exactReturnType, implementation, options);
+        if (failedCreations.contains(key)) {
+            return Optional.empty();
+        }
+        final Object mock;
+        try {
+            mock = newMock(specification, exactReturnType, implementation, options, pathName(invocation));
+        } catch (final CannotCreateMockException cannotCreate) {
+            failedCreations.add(key);
+            return Optional.empty();
+        }
         final DeepMockInteraction entry = DeepMockInteraction.create(invocation, mock);
         entries.add(entry);
-        return entry;
-    }
-
-    private static void requireMockable(final IMockInvocation invocation) {
-        final Class<?> returnType = invocation.getMethod().getReturnType();
-        final String reason = unmockableReason(returnType);
-        if (reason != null) {
-            throw new InvalidSpecException(String.format(
-                    "Cannot return a deep mock from %s.%s(): %s %s and cannot be mocked. "
-                            + "Stub the call instead, for example: %s.%s() >> <value>",
-                    invocation.getMockObject().getName(), invocation.getMethod().getName(),
-                    returnType.getName(), reason,
-                    invocation.getMockObject().getName(), invocation.getMethod().getName()));
-        }
-    }
-
-    private static String unmockableReason(final Class<?> type) {
-        if (type.isPrimitive()) {
-            return "is a primitive type";
-        }
-        if (type.isArray()) {
-            return "is an array";
-        }
-        if (Modifier.isFinal(type.getModifiers())) {
-            return "is final";
-        }
-        return null;
+        return Optional.of(entry);
     }
 
     private static MockImplementation implementationOf(final IMockInvocation invocation) {
         return GroovyObject.class.isAssignableFrom(invocation.getMethod().getReturnType()) ? GROOVY : JAVA;
     }
 
-    private Object newMock(final IMockObject mockObject, final Specification specification, final Type exactReturnType, final MockImplementation implementation) {
-        final Map<String, Object> options = singletonMap("defaultResponse", deepMockResponse);
+    private Map<String, Object> nestedOptions(final IMockConfiguration parent) {
+        final Map<String, Object> options = new LinkedHashMap<>();
+        options.put("defaultResponse", deepMockResponse);
+        if (parent.getMockMaker() != null) {
+            options.put("mockMaker", parent.getMockMaker());
+        }
+        options.put("verified", parent.isVerified());
+        options.put("useObjenesis", parent.isUseObjenesis());
+        return options;
+    }
+
+    private static String pathName(final IMockInvocation invocation) {
+        final String arguments = invocation.getArguments().stream()
+                .map(MockCache::describe)
+                .collect(joining(", "));
+        return mockName(invocation.getMockObject()) + "." + invocation.getMethod().getName() + "(" + arguments + ")";
+    }
+
+    private static String describe(final Object argument) {
+        return MOCK_UTIL.isMock(argument)
+                ? mockName(MOCK_UTIL.asMock(argument))
+                : InvokerHelper.inspect(argument);
+    }
+
+    private static String mockName(final IMockObject mockObject) {
+        return mockObject.getName() != null ? mockObject.getName() : mockObject.getType().getSimpleName();
+    }
+
+    private static Object newMock(final Specification specification, final Type exactReturnType, final MockImplementation implementation, final Map<String, Object> options, final String name) {
         return implementation == GROOVY
-                ? SpecInternals.GroovyMockImpl(specification, mockObject.getName(), exactReturnType, options)
-                : SpecInternals.MockImpl(specification, mockObject.getName(), exactReturnType, options);
+                ? SpecInternals.GroovyMockImpl(specification, name, exactReturnType, options)
+                : SpecInternals.MockImpl(specification, name, exactReturnType, options);
     }
 }

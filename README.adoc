@@ -3,14 +3,14 @@
 :icons: font
 
 image:https://github.com/joke/spock-deepmock/workflows/build/badge.svg?branch=main[]
-image:https://img.shields.io/github/license/joke/spring-factory[GitHub]
+image:https://img.shields.io/github/license/joke/spock-deepmock[GitHub]
 image:https://img.shields.io/maven-central/v/io.github.joke/spock-deepmock?label=latest%20version[link=https://search.maven.org/artifact/io.github.joke/spock-deepmock]
 image:https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg[link=https://conventionalcommits.org]
 image:https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit[pre-commit, link=https://github.com/pre-commit/pre-commit]
 
 `spock-deepmock` adds deep mocking capabilities to the http://spockframework.org/[Spock Framework].
 
-In contrast to builtin http://spockframework.org/spock/docs/1.3/all_in_one.html#_mocking[mocks]
+In contrast to builtin https://spockframework.org/spock/docs/2.4/interaction_based_testing.html[mocks]
 a deep mock will return another deep mock object automatically. This way there
 is no need to define chains of nested mocks.
 
@@ -19,6 +19,12 @@ is no need to define chains of nested mocks.
 * Uses same syntax as the builtins `Mock()` and `GroovyMock()`
 * Supports interaction verification
 * Works with Spock Framework 2.4 (on Groovy 4.0)
+
+== Requirements
+
+* Spock Framework 2.4 or later
+* Java 8 or later
+* Tested with Groovy 4.0
 
 == Gradle Dependency
 
@@ -37,14 +43,14 @@ dependencies {
 .pom.xml
 [source,xml]
 ----
-<depenencies>
+<dependencies>
   <dependency>
     <groupId>io.github.joke</groupId>
     <artifactId>spock-deepmock</artifactId>
     <version>x.y.z</version>
     <scope>test</scope>
   </dependency>
-</depenencies>
+</dependencies>
 ----
 
 == Usage
@@ -71,7 +77,7 @@ def 'calling nested mock'() {
 
     when:
     // calls mock.getChild().getChild().getName()
-    def res = caller.nameOfSubSubChild()
+    def res = caller.call()
 
     then:
     1 * mock.child.child.name >> 'Hello'
@@ -81,4 +87,44 @@ def 'calling nested mock'() {
 }
 ----
 
-Further examples in link:examples-java[] or link:examples-groovy[].
+Further examples in link:examples/src/test/groovy/io/github/joke/test[].
+
+== How deep mocks answer
+
+`DeepMock()` creates a Java mock and `GroovyDeepMock()` creates a Groovy mock.
+
+An unstubbed call on a deep mock returns a nested mock of the return type of the call.
+
+* Each call has its own nested mock. `mock.child` and `mock.getChild()` return the same nested mock.
+* The same call with equal arguments returns the same nested mock. `mock.child('first')` returns the same nested mock each time, while `mock.child('second')` returns another one.
+* A nested mock lives as long as the specification instance that created it.
+* A return type that the mock makers cannot mock gets the answer of a `Mock()`: `null` for `void` and reference types, and the default value for primitive types. This applies to `void`, primitive types, arrays, `String`, `Integer` and other types that cannot be mocked.
+* Nested mocks have path names that show the call that produced them, for example `nested.getChild().child('first')`. Failure messages show these names.
+
+Stub a call when a test needs a value from it, for example `mock.name >> 'Hello'`.
+
+== Options
+
+A nested mock inherits these options of the deep mock that created it:
+
+* `mockMaker`, when the parent sets one
+* `verified`
+* `useObjenesis`
+
+A nested mock does not inherit these options. They apply to the parent type only:
+
+* `name`: a nested mock has a path name
+* `additionalInterfaces`
+* `global`
+* `constructorArgs`
+
+The option `defaultResponse` is rejected.
+
+== Migrating from 4.x
+
+* `GroovyDeepMock()` creates a Groovy mock. Before, every `GroovyDeepMock()` overload created a Java mock.
+* Each call has its own nested mock. Before, overloads with equal arguments, such as `lookup(String)` and `lookup(Object)`, could return the same nested mock.
+* Nested mocks live as long as the specification instance that created them. Before, one static cache kept them for the whole JVM.
+* A return type that the mock makers cannot mock gets the answer of a `Mock()`. Before, the call threw `CannotCreateMockException`.
+* Nested mocks have path names. Before, every nested mock had the name of the top-level mock.
+* Spock 2.4 is necessary.
