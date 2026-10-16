@@ -13,7 +13,7 @@ Each repository runs a `build` workflow, a `release` workflow with release-pleas
 | Release token | `secrets.RELEASE_PLEASE` (a personal token) | default `GITHUB_TOKEN` | default `GITHUB_TOKEN` |
 | DCO | DCO App required, `signoff:` set | not used | not used |
 | Semantic PR | `semantic.yml`, required | absent | absent |
-| Snapshots | none | `snapshot` job | none |
+| Snapshots | none | none | `snapshot` job |
 
 Branch protection on percolate requires only `build`. pmd-rules has no branch protection (the API returns 404).
 

@@ -6,4 +6,4 @@ This document outlines the process to help get your contribution accepted.
 == Pull Request Checklist
 
 * Write commit messages in the style of https://www.conventionalcommits.org/en/v1.0.0/[Conventional Commits].
-* Accept the https://developercertificate.org/[Developer Certificate of Origin (DCO)] by https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---signoff[signing off] your commits.
+* Sign off every commit to accept the https://developercertificate.org/[Developer Certificate of Origin (DCO)], using https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---signoff[`git commit --signoff`]. The `build` check fails when a commit has no `Signed-off-by:` trailer.

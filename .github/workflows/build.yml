@@ -11,14 +11,33 @@ permissions:
 
 jobs:
   build:
-    # release-please PRs only ever touch CHANGELOG.md - a full check is superfluous there.
-    if: ${{ !startsWith(github.head_ref, 'release-please--') }}
+    # release-please PRs and the release commits they merge into only touch CHANGELOG.md and the
+    # manifest - a full check is superfluous there.
+    if: >-
+      ${{ !startsWith(github.head_ref, 'release-please--')
+      && !startsWith(github.event.head_commit.message, 'chore: release ') }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
         # The version is derived from git tags, which needs the full history.
         fetch-depth: 0
+    # Every commit of a pull request must carry a Signed-off-by trailer (the Developer Certificate of
+    # Origin). Dependabot cannot add one, so its pull requests are exempt.
+    - name: Check Signed-off-by trailers
+      if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]' }}
+      env:
+        BASE: ${{ github.event.pull_request.base.sha }}
+        HEAD: ${{ github.event.pull_request.head.sha }}
+      run: |
+        status=0
+        for sha in $(git rev-list "$BASE..$HEAD"); do
+          if ! git show -s --format=%B "$sha" | grep -q '^Signed-off-by: '; then
+            echo "::error::$sha has no Signed-off-by trailer, see CONTRIBUTING.adoc"
+            status=1
+          fi
+        done
+        exit $status
     - uses: jdx/mise-action@v4
     - uses: gradle/actions/setup-gradle@v6
     - run: ./gradlew check
