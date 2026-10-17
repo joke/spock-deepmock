@@ -8,15 +8,15 @@ javaPlatform {
 }
 
 dependencies {
-    api platform('org.apache.groovy:groovy-bom:4.0.6')
+    api platform('org.apache.groovy:groovy-bom:4.0.33')
     api platform('org.spockframework:spock-bom:2.4-groovy-4.0')
 
-    api 'net.bytebuddy:byte-buddy:1.17.4'
-    api 'org.objenesis:objenesis:3.3'
-    api 'org.slf4j:slf4j-simple:2.0.17'
+    api 'net.bytebuddy:byte-buddy:1.18.15-jdk5'
+    api 'org.objenesis:objenesis:3.6'
+    api 'org.slf4j:slf4j-simple:2.0.20'
 
     constraints {
-        api 'org.mockito:mockito-core:5.23.0'
-        api 'org.projectlombok:lombok:1.18.46'
+        api 'org.mockito:mockito-core:5.24.0'
+        api 'org.projectlombok:lombok:1.18.48'
     }
 }
