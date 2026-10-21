@@ -25,7 +25,7 @@ dependencies {
     testImplementation 'org.spockframework:spock-core'
 
     spock24groovy40Implementation platform(project(path: ':dependencies'))
-    spock24groovy40Implementation enforcedPlatform('org.apache.groovy:groovy-bom:4.0.6')
+    spock24groovy40Implementation enforcedPlatform('org.apache.groovy:groovy-bom:6.0.0')
     spock24groovy40Implementation enforcedPlatform('org.spockframework:spock-bom:2.4-groovy-4.0')
     spock24groovy40Implementation project(path: ':spock-deepmock')
     spock24groovy40Implementation 'net.bytebuddy:byte-buddy'
