@@ -1,12 +1,12 @@
 package io.github.joke.spockdeepmock;
 
-import org.spockframework.mock.IMockInteraction;
-import org.spockframework.mock.IMockInvocation;
+import static java.lang.Thread.currentThread;
+import static java.util.Collections.emptyList;
 
 import java.util.List;
 import java.util.function.Supplier;
-
-import static java.util.Collections.emptyList;
+import org.spockframework.mock.IMockInteraction;
+import org.spockframework.mock.IMockInvocation;
 
 /**
  * Answers the calls that a specification makes on deep mocks while it evaluates the target of an interaction.
@@ -14,7 +14,7 @@ import static java.util.Collections.emptyList;
  */
 class ChainWalker implements IMockInteraction {
 
-    private final Thread thread = Thread.currentThread();
+    private final Thread thread = currentThread();
 
     @Override
     public int getLine() {
@@ -33,7 +33,7 @@ class ChainWalker implements IMockInteraction {
 
     @Override
     public boolean matches(final IMockInvocation invocation) {
-        return Thread.currentThread() == thread
+        return thread.equals(currentThread())
                 && invocation.getMockObject().getDefaultResponse() instanceof DeepMockResponse;
     }
 
