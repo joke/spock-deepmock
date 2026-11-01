@@ -1,14 +1,16 @@
 package io.github.joke.spockdeepmock;
 
-import org.spockframework.mock.IDefaultResponse;
-import org.spockframework.mock.runtime.MockController;
-import spock.lang.Specification;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.jetbrains.annotations.VisibleForTesting;
+import org.jspecify.annotations.Nullable;
+import org.spockframework.mock.IDefaultResponse;
+import org.spockframework.mock.runtime.MockController;
+import spock.lang.Specification;
 
 /**
  * Runtime support for the code that {@link DeepMockTransformation} generates. Not intended for direct use.
@@ -19,8 +21,7 @@ public final class DeepMockSupport {
 
     private static final String DEFAULT_RESPONSE = "defaultResponse";
 
-    private DeepMockSupport() {
-    }
+    private DeepMockSupport() {}
 
     public static Map<String, Object> options(final Object options) {
         // generated code passes the caller's options map as Object
@@ -42,12 +43,13 @@ public final class DeepMockSupport {
      * Starts a walk over the target of an interaction. Calls on deep mocks made until {@link #endWalk} are answered
      * without counting. Returns {@code null} outside a specification.
      */
-    public static Object beginWalk(final Object self, final int line, final int column) {
+    public static @Nullable Object beginWalk(final Object self, final int line, final int column) {
         if (!(self instanceof Specification)) {
             return null;
         }
         final Specification specification = (Specification) self;
-        final MockController controller = (MockController) specification.getSpecificationContext().getMockController();
+        final MockController controller =
+                (MockController) specification.getSpecificationContext().getMockController();
         controller.enterScope();
         controller.addInteraction(new ChainWalker());
         return new Walk(specification, controller, line, column);
@@ -62,7 +64,8 @@ public final class DeepMockSupport {
         }
         final Walk current = (Walk) walk;
         current.controller.leaveScope();
-        for (final DeepMockInteraction step : MockCache.of(current.specification).pathTo(target)) {
+        for (final DeepMockInteraction step :
+                MockCache.of(current.specification).pathTo(target)) {
             current.controller.addInteraction(step.stepAt(current.line, current.column));
         }
         return target;
@@ -70,14 +73,15 @@ public final class DeepMockSupport {
 
     public static List<Object> arguments(final Object argument) {
         if (argument instanceof Map) {
-            return new ArrayList<>(Arrays.asList(options(argument)));
+            return new ArrayList<>(asList(options(argument)));
         }
         final Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put(DEFAULT_RESPONSE, RESPONSE);
-        return new ArrayList<>(Arrays.asList(defaults, argument));
+        return new ArrayList<>(asList(defaults, argument));
     }
 
-    private static UnsupportedOperationException defaultResponseRejected() {
+    @VisibleForTesting
+    static UnsupportedOperationException defaultResponseRejected() {
         return new UnsupportedOperationException("DeepMocks with default response are not supported.");
     }
 

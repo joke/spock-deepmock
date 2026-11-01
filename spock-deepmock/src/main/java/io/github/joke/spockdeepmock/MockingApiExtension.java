@@ -14,25 +14,23 @@
 
 package io.github.joke.spockdeepmock;
 
+import static groovy.lang.Closure.DELEGATE_FIRST;
+
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
-import lombok.experimental.UtilityClass;
-import groovy.lang.Singleton;
 import groovy.transform.NamedParam;
 import groovy.transform.NamedParams;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.FirstParam;
-import groovy.transform.stc.SecondParam;
 import groovy.transform.stc.SecondParam.FirstGenericType;
+import java.util.List;
+import java.util.Map;
+import lombok.experimental.UtilityClass;
+import org.jetbrains.annotations.VisibleForTesting;
 import org.spockframework.runtime.InvalidSpecException;
 import org.spockframework.util.Beta;
 import spock.mock.IMockMakerSettings;
 import spock.mock.MockingApi;
-
-import java.util.List;
-import java.util.Map;
-
-import static groovy.lang.Closure.DELEGATE_FIRST;
 
 /**
  * Extends the {@link spock.mock.MockingApi} with Deep*Mock methods
@@ -40,6 +38,12 @@ import static groovy.lang.Closure.DELEGATE_FIRST;
 // copied and extended from spock.mock.MockingApi
 @UtilityClass
 public class MockingApiExtension {
+
+    private static final String NAME = "name";
+    private static final String ADDITIONAL_INTERFACES = "additionalInterfaces";
+    private static final String VERIFIED = "verified";
+    private static final String USE_OBJENESIS = "useObjenesis";
+    private static final String GLOBAL = "global";
 
     /**
      * Creates a deep mock whose type and name are inferred from the left-hand side of the enclosing variable assignment.
@@ -53,8 +57,7 @@ public class MockingApiExtension {
      * @return a deep mock whose type and name are inferred from the left-hand side of the enclosing variable assignment
      */
     public static <T> T DeepMock(final MockingApi self) {
-        invalidMockCreation();
-        return null;
+        throw invalidMockCreation();
     }
 
     /**
@@ -72,9 +75,17 @@ public class MockingApiExtension {
      * enclosing variable assignment
      */
     @Beta
-    public static <T> T DeepMock(final MockingApi self, @NamedParams({@NamedParam(value = "name", type = String.class), @NamedParam(value = "additionalInterfaces", type = List.class), @NamedParam(value = "verified", type = Boolean.class), @NamedParam(value = "useObjenesis", type = Boolean.class), @NamedParam(value = "mockMaker", type = IMockMakerSettings.class)}) final Map<String, Object> options) {
-        invalidMockCreation();
-        return null;
+    public static <T> T DeepMock(
+            final MockingApi self,
+            @NamedParams({
+                        @NamedParam(value = NAME, type = String.class),
+                        @NamedParam(value = ADDITIONAL_INTERFACES, type = List.class),
+                        @NamedParam(value = VERIFIED, type = Boolean.class),
+                        @NamedParam(value = USE_OBJENESIS, type = Boolean.class),
+                        @NamedParam(value = "mockMaker", type = IMockMakerSettings.class)
+                    })
+                    final Map<String, Object> options) {
+        throw invalidMockCreation();
     }
 
     /**
@@ -92,8 +103,7 @@ public class MockingApiExtension {
      * @return a deep mock with the specified type
      */
     public static <T> T DeepMock(final MockingApi self, final Class<T> type) {
-        invalidMockCreation();
-        return null;
+        throw invalidMockCreation();
     }
 
     /**
@@ -112,9 +122,18 @@ public class MockingApiExtension {
      * @return a deep mock with the specified options and type
      */
     @Beta
-    public static <T> T DeepMock(final MockingApi self, @NamedParams({@NamedParam(value = "name", type = String.class), @NamedParam(value = "additionalInterfaces", type = List.class), @NamedParam(value = "verified", type = Boolean.class), @NamedParam(value = "useObjenesis", type = Boolean.class), @NamedParam(value = "mockMaker", type = IMockMakerSettings.class)}) final Map<String, Object> options, final Class<T> type) {
-        invalidMockCreation();
-        return null;
+    public static <T> T DeepMock(
+            final MockingApi self,
+            @NamedParams({
+                        @NamedParam(value = NAME, type = String.class),
+                        @NamedParam(value = ADDITIONAL_INTERFACES, type = List.class),
+                        @NamedParam(value = VERIFIED, type = Boolean.class),
+                        @NamedParam(value = USE_OBJENESIS, type = Boolean.class),
+                        @NamedParam(value = "mockMaker", type = IMockMakerSettings.class)
+                    })
+                    final Map<String, Object> options,
+            final Class<T> type) {
+        throw invalidMockCreation();
     }
 
     /**
@@ -137,8 +156,7 @@ public class MockingApiExtension {
      */
     @Beta
     public static <T> T DeepMock(final MockingApi self, final Closure<?> interactions) {
-        invalidMockCreation();
-        return null;
+        throw invalidMockCreation();
     }
 
     /**
@@ -161,9 +179,9 @@ public class MockingApiExtension {
      * from the left-hand side of the enclosing assignment
      */
     @Beta
-    public static <T> T DeepMock(final MockingApi self, final Map<String, Object> options, final Closure<?> interactions) {
-        invalidMockCreation();
-        return null;
+    public static <T> T DeepMock(
+            final MockingApi self, final Map<String, Object> options, final Closure<?> interactions) {
+        throw invalidMockCreation();
     }
 
     /**
@@ -186,9 +204,13 @@ public class MockingApiExtension {
      * @return a deep mock with the specified type and interactions
      */
     @Beta
-    public static <T> T DeepMock(final MockingApi self, @DelegatesTo.Target final Class<T> type, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) @ClosureParams(FirstParam.FirstGenericType.class) final Closure<?> interactions) {
-        invalidMockCreation();
-        return null;
+    public static <T> T DeepMock(
+            final MockingApi self,
+            @DelegatesTo.Target final Class<T> type,
+            @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0)
+                    @ClosureParams(FirstParam.FirstGenericType.class)
+                    final Closure<?> interactions) {
+        throw invalidMockCreation();
     }
 
     /**
@@ -212,9 +234,20 @@ public class MockingApiExtension {
      * @return a deep mock with the specified options, type, and interactions
      */
     @Beta
-    public static <T> T DeepMock(final MockingApi self, @NamedParams({@NamedParam(value = "name", type = String.class), @NamedParam(value = "additionalInterfaces", type = List.class), @NamedParam(value = "verified", type = Boolean.class), @NamedParam(value = "useObjenesis", type = Boolean.class), @NamedParam(value = "mockMaker", type = IMockMakerSettings.class)}) final Map<String, Object> options, @DelegatesTo.Target final Class<T> type, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) @ClosureParams(FirstGenericType.class) final Closure<?> interactions) {
-        invalidMockCreation();
-        return null;
+    public static <T> T DeepMock(
+            final MockingApi self,
+            @NamedParams({
+                        @NamedParam(value = NAME, type = String.class),
+                        @NamedParam(value = ADDITIONAL_INTERFACES, type = List.class),
+                        @NamedParam(value = VERIFIED, type = Boolean.class),
+                        @NamedParam(value = USE_OBJENESIS, type = Boolean.class),
+                        @NamedParam(value = "mockMaker", type = IMockMakerSettings.class)
+                    })
+                    final Map<String, Object> options,
+            @DelegatesTo.Target final Class<T> type,
+            @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) @ClosureParams(FirstGenericType.class)
+                    final Closure<?> interactions) {
+        throw invalidMockCreation();
     }
 
     /**
@@ -230,8 +263,7 @@ public class MockingApiExtension {
      */
     @Beta
     public static <T> T GroovyDeepMock(final MockingApi self) {
-        invalidMockCreation();
-        return null;
+        throw invalidMockCreation();
     }
 
     /**
@@ -249,9 +281,17 @@ public class MockingApiExtension {
      * enclosing variable assignment
      */
     @Beta
-    public static <T> T GroovyDeepMock(final MockingApi self, @NamedParams({@NamedParam(value = "name", type = String.class), @NamedParam(value = "additionalInterfaces", type = List.class), @NamedParam(value = "verified", type = Boolean.class), @NamedParam(value = "useObjenesis", type = Boolean.class), @NamedParam(value = "global", type = Boolean.class)}) final Map<String, Object> options) {
-        invalidMockCreation();
-        return null;
+    public static <T> T GroovyDeepMock(
+            final MockingApi self,
+            @NamedParams({
+                        @NamedParam(value = NAME, type = String.class),
+                        @NamedParam(value = ADDITIONAL_INTERFACES, type = List.class),
+                        @NamedParam(value = VERIFIED, type = Boolean.class),
+                        @NamedParam(value = USE_OBJENESIS, type = Boolean.class),
+                        @NamedParam(value = GLOBAL, type = Boolean.class)
+                    })
+                    final Map<String, Object> options) {
+        throw invalidMockCreation();
     }
 
     /**
@@ -270,8 +310,7 @@ public class MockingApiExtension {
      */
     @Beta
     public static <T> T GroovyDeepMock(final MockingApi self, final Class<T> type) {
-        invalidMockCreation();
-        return null;
+        throw invalidMockCreation();
     }
 
     /**
@@ -290,9 +329,18 @@ public class MockingApiExtension {
      * @return a Groovy deep mock with the specified options and type
      */
     @Beta
-    public static <T> T GroovyDeepMock(final MockingApi self, @NamedParams({@NamedParam(value = "name", type = String.class), @NamedParam(value = "additionalInterfaces", type = List.class), @NamedParam(value = "verified", type = Boolean.class), @NamedParam(value = "useObjenesis", type = Boolean.class), @NamedParam(value = "global", type = Boolean.class)}) final Map<String, Object> options, final Class<T> type) {
-        invalidMockCreation();
-        return null;
+    public static <T> T GroovyDeepMock(
+            final MockingApi self,
+            @NamedParams({
+                        @NamedParam(value = NAME, type = String.class),
+                        @NamedParam(value = ADDITIONAL_INTERFACES, type = List.class),
+                        @NamedParam(value = VERIFIED, type = Boolean.class),
+                        @NamedParam(value = USE_OBJENESIS, type = Boolean.class),
+                        @NamedParam(value = GLOBAL, type = Boolean.class)
+                    })
+                    final Map<String, Object> options,
+            final Class<T> type) {
+        throw invalidMockCreation();
     }
 
     /**
@@ -315,8 +363,7 @@ public class MockingApiExtension {
      */
     @Beta
     public static <T> T GroovyDeepMock(final MockingApi self, final Closure<?> interactions) {
-        invalidMockCreation();
-        return null;
+        throw invalidMockCreation();
     }
 
     /**
@@ -339,9 +386,18 @@ public class MockingApiExtension {
      * from the left-hand side of the enclosing assignment
      */
     @Beta
-    public static <T> T GroovyDeepMock(final MockingApi self, @NamedParams({@NamedParam(value = "name", type = String.class), @NamedParam(value = "additionalInterfaces", type = List.class), @NamedParam(value = "verified", type = Boolean.class), @NamedParam(value = "useObjenesis", type = Boolean.class), @NamedParam(value = "global", type = Boolean.class)}) final Map<String, Object> options, final Closure<?> interactions) {
-        invalidMockCreation();
-        return null;
+    public static <T> T GroovyDeepMock(
+            final MockingApi self,
+            @NamedParams({
+                        @NamedParam(value = NAME, type = String.class),
+                        @NamedParam(value = ADDITIONAL_INTERFACES, type = List.class),
+                        @NamedParam(value = VERIFIED, type = Boolean.class),
+                        @NamedParam(value = USE_OBJENESIS, type = Boolean.class),
+                        @NamedParam(value = GLOBAL, type = Boolean.class)
+                    })
+                    final Map<String, Object> options,
+            final Closure<?> interactions) {
+        throw invalidMockCreation();
     }
 
     /**
@@ -364,9 +420,13 @@ public class MockingApiExtension {
      * @return a Groovy deep mock with the specified type and interactions
      */
     @Beta
-    public static <T> T GroovyDeepMock(final MockingApi self, @DelegatesTo.Target final Class<T> type, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) @ClosureParams(FirstParam.FirstGenericType.class) final Closure<?> interactions) {
-        invalidMockCreation();
-        return null;
+    public static <T> T GroovyDeepMock(
+            final MockingApi self,
+            @DelegatesTo.Target final Class<T> type,
+            @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0)
+                    @ClosureParams(FirstParam.FirstGenericType.class)
+                    final Closure<?> interactions) {
+        throw invalidMockCreation();
     }
 
     /**
@@ -390,13 +450,25 @@ public class MockingApiExtension {
      * @return a Groovy deep mock with the specified options, type, and interactions
      */
     @Beta
-    public static <T> T GroovyDeepMock(final MockingApi self, @NamedParams({@NamedParam(value = "name", type = String.class), @NamedParam(value = "additionalInterfaces", type = List.class), @NamedParam(value = "verified", type = Boolean.class), @NamedParam(value = "useObjenesis", type = Boolean.class), @NamedParam(value = "global", type = Boolean.class)}) final Map<String, Object> options, @DelegatesTo.Target final Class<T> type, @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) @ClosureParams(FirstGenericType.class) final Closure<?> interactions) {
-        invalidMockCreation();
-        return null;
+    public static <T> T GroovyDeepMock(
+            final MockingApi self,
+            @NamedParams({
+                        @NamedParam(value = NAME, type = String.class),
+                        @NamedParam(value = ADDITIONAL_INTERFACES, type = List.class),
+                        @NamedParam(value = VERIFIED, type = Boolean.class),
+                        @NamedParam(value = USE_OBJENESIS, type = Boolean.class),
+                        @NamedParam(value = GLOBAL, type = Boolean.class)
+                    })
+                    final Map<String, Object> options,
+            @DelegatesTo.Target final Class<T> type,
+            @DelegatesTo(strategy = DELEGATE_FIRST, genericTypeIndex = 0) @ClosureParams(FirstGenericType.class)
+                    final Closure<?> interactions) {
+        throw invalidMockCreation();
     }
 
-    private static void invalidMockCreation() {
-        throw new InvalidSpecException("The compiler did not rewrite this call. Call DeepMock() or GroovyDeepMock() directly in a specification, not through a method reference or another indirect call");
+    @VisibleForTesting
+    static InvalidSpecException invalidMockCreation() {
+        return new InvalidSpecException(
+                "The compiler did not rewrite this call. Call DeepMock() or GroovyDeepMock() directly in a specification, not through a method reference or another indirect call");
     }
-
 }

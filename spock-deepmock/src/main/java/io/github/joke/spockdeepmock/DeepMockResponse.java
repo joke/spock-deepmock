@@ -1,5 +1,6 @@
 package io.github.joke.spockdeepmock;
 
+import org.jetbrains.annotations.VisibleForTesting;
 import org.spockframework.mock.DefaultJavaLangObjectInteractions;
 import org.spockframework.mock.IDefaultResponse;
 import org.spockframework.mock.IMockInteraction;
@@ -8,6 +9,7 @@ import org.spockframework.mock.ZeroOrNullResponse;
 
 class DeepMockResponse implements IDefaultResponse {
 
+    @Override
     public Object respond(final IMockInvocation invocation) {
         final IMockInteraction interaction = DefaultJavaLangObjectInteractions.INSTANCE.match(invocation);
         if (interaction != null) {
@@ -22,12 +24,14 @@ class DeepMockResponse implements IDefaultResponse {
                 .orElseGet(() -> fallback(invocation));
     }
 
-    private static boolean isNeverMockable(final IMockInvocation invocation) {
+    @VisibleForTesting
+    boolean isNeverMockable(final IMockInvocation invocation) {
         final Class<?> returnType = invocation.getMethod().getReturnType();
         return returnType.isPrimitive() || returnType.isArray();
     }
 
-    private static Object fallback(final IMockInvocation invocation) {
+    @VisibleForTesting
+    Object fallback(final IMockInvocation invocation) {
         return ZeroOrNullResponse.INSTANCE.respond(invocation);
     }
 }

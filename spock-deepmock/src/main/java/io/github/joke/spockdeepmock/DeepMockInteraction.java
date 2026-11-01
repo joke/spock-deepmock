@@ -1,5 +1,14 @@
 package io.github.joke.spockdeepmock;
 
+import static java.lang.String.join;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+import org.jetbrains.annotations.VisibleForTesting;
 import org.spockframework.mock.IArgumentConstraint;
 import org.spockframework.mock.IInvocationConstraint;
 import org.spockframework.mock.IMockInteraction;
@@ -9,20 +18,12 @@ import org.spockframework.mock.constraint.EqualMethodNameConstraint;
 import org.spockframework.mock.constraint.PositionalArgumentListConstraint;
 import org.spockframework.mock.constraint.TargetConstraint;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
-
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
-
 /**
  * The implicit step interaction of a deep mock chain: {@code _ * parent.call(arguments) >> nested}.
  * It is registered for each step of a chain, at the position of the declaring interaction. It never
  * counts invocations.
  */
-class DeepMockInteraction implements IMockInteraction {
+final class DeepMockInteraction implements IMockInteraction {
 
     private final Object mock;
 
@@ -36,8 +37,13 @@ class DeepMockInteraction implements IMockInteraction {
 
     private final int column;
 
-    private DeepMockInteraction(final Object mock, final Object parent, final String pathName,
-                                final List<IInvocationConstraint> constraints, final int line, final int column) {
+    private DeepMockInteraction(
+            final Object mock,
+            final Object parent,
+            final String pathName,
+            final List<IInvocationConstraint> constraints,
+            final int line,
+            final int column) {
         this.mock = mock;
         this.parent = parent;
         this.pathName = pathName;
@@ -46,14 +52,25 @@ class DeepMockInteraction implements IMockInteraction {
         this.column = column;
     }
 
+    @VisibleForTesting
     static DeepMockInteraction create(final IMockInvocation invocation, final Object mock, final String pathName) {
-        return new DeepMockInteraction(mock, invocation.getMockObject().getInstance(), pathName, constraints(invocation), -1, -1);
+        final List<IArgumentConstraint> argumentConstraints = invocation.getArguments().stream()
+                .map(EqualArgumentConstraint::new)
+                .collect(toList());
+        final List<IInvocationConstraint> constraints = asList(
+                new TargetConstraint(invocation.getMockObject().getInstance()),
+                new EqualMethodNameConstraint(invocation.getMethod().getName()),
+                new ParameterTypesConstraint(invocation.getMethod().getParameterTypes()),
+                new PositionalArgumentListConstraint(argumentConstraints, false));
+        return new DeepMockInteraction(mock, invocation.getMockObject().getInstance(), pathName, constraints, -1, -1);
     }
 
+    @VisibleForTesting
     DeepMockInteraction stepAt(final int line, final int column) {
         return new DeepMockInteraction(mock, parent, pathName, constraints, line, column);
     }
 
+    @VisibleForTesting
     Object getParent() {
         return parent;
     }
@@ -75,8 +92,7 @@ class DeepMockInteraction implements IMockInteraction {
 
     @Override
     public boolean matches(final IMockInvocation invocation) {
-        return constraints.stream()
-                .allMatch(constraint -> constraint.isSatisfiedBy(invocation));
+        return constraints.stream().allMatch(constraint -> constraint.isSatisfiedBy(invocation));
     }
 
     @Override
@@ -94,7 +110,7 @@ class DeepMockInteraction implements IMockInteraction {
         int score = 0;
         int weight = constraints.size();
         for (final IInvocationConstraint constraint : constraints) {
-            if (!isSatisfied(constraint, invocation)) {
+            if (!constraint.isSatisfiedBy(invocation)) {
                 score += weight;
             }
             weight--;
@@ -106,11 +122,11 @@ class DeepMockInteraction implements IMockInteraction {
     public String describeMismatch(final IMockInvocation invocation) {
         final List<String> mismatches = new ArrayList<>();
         for (final IInvocationConstraint constraint : constraints) {
-            if (!isSatisfied(constraint, invocation)) {
+            if (!constraint.isSatisfiedBy(invocation)) {
                 mismatches.add(constraint.describeMismatch(invocation));
             }
         }
-        return String.join("\n", mismatches);
+        return join("\n", mismatches);
     }
 
     @Override
@@ -133,26 +149,6 @@ class DeepMockInteraction implements IMockInteraction {
         return getText();
     }
 
-    private static boolean isSatisfied(final IInvocationConstraint constraint, final IMockInvocation invocation) {
-        try {
-            return constraint.isSatisfiedBy(invocation);
-        } catch (final Exception e) {
-            // Argument constraints can fail when the target or the method does not match, as in Spock's MockInteraction.
-            return false;
-        }
-    }
-
-    private static List<IInvocationConstraint> constraints(final IMockInvocation invocation) {
-        final List<IArgumentConstraint> argumentConstraints = invocation.getArguments().stream()
-                .map(EqualArgumentConstraint::new)
-                .collect(toList());
-        return asList(
-                new TargetConstraint(invocation.getMockObject().getInstance()),
-                new EqualMethodNameConstraint(invocation.getMethod().getName()),
-                new ParameterTypesConstraint(invocation.getMethod().getParameterTypes()),
-                new PositionalArgumentListConstraint(argumentConstraints, false));
-    }
-
     private static final class ParameterTypesConstraint implements IInvocationConstraint {
 
         private final List<Class<?>> parameterTypes;
@@ -168,7 +164,8 @@ class DeepMockInteraction implements IMockInteraction {
 
         @Override
         public String describeMismatch(final IMockInvocation invocation) {
-            return "parameter types " + parameterTypes + " do not match " + invocation.getMethod().getParameterTypes();
+            return "parameter types " + parameterTypes + " do not match "
+                    + invocation.getMethod().getParameterTypes();
         }
     }
 }
