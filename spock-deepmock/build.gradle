@@ -3,6 +3,7 @@ plugins {
     id 'signing'
     id 'maven-publish'
     id 'io.freefair.lombok'
+    id 'groovy'
     id 'spock-deepmock.conventions'
 }
 
@@ -12,9 +13,25 @@ dependencies {
 
     compileOnly enforcedPlatform(project(path: ':dependencies'))
     compileOnly 'org.projectlombok:lombok'
+    compileOnly 'org.jetbrains:annotations'
     compileOnly platform('org.apache.groovy:groovy-bom:4.0.33')
-    compileOnly platform('org.spockframework:spock-bom:2.4-groovy-4.0')
+    compileOnly platform('org.spockframework:spock-bom:2.5-groovy-4.0')
     compileOnly 'org.spockframework:spock-core'
+
+    testCompileOnly enforcedPlatform(project(path: ':dependencies'))
+
+    testImplementation enforcedPlatform(project(path: ':dependencies'))
+    testImplementation 'org.apache.groovy:groovy'
+    testImplementation 'net.bytebuddy:byte-buddy'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.spockframework:spock-core'
+    // EmbeddedSpecRunner needs the JUnit testkit, which spock-core does not declare.
+    testImplementation 'org.junit.platform:junit-platform-testkit'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 publishing {

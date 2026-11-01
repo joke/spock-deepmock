@@ -4,57 +4,20 @@ plugins {
     id 'spock-deepmock.conventions'
 }
 
-def spock2x = [
-        'spock24groovy40'
-]
-
-[*spock2x].forEach {
-    sourceSets.register(it) {
-        java.srcDirs += sourceSets.main.java.srcDirs
-        groovy.srcDirs += sourceSets.main.groovy.srcDirs
-        groovy.srcDirs += sourceSets.test.groovy.srcDirs
-    }
-}
-
 dependencies {
     implementation enforcedPlatform(project(path: ':dependencies'))
     implementation 'org.apache.groovy:groovy'
 
     testImplementation project(path: ':spock-deepmock')
+    testImplementation 'net.bytebuddy:byte-buddy'
+    testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.slf4j:slf4j-simple'
     testImplementation 'org.spockframework:spock-core'
-
-    spock24groovy40Implementation platform(project(path: ':dependencies'))
-    spock24groovy40Implementation enforcedPlatform('org.apache.groovy:groovy-bom:4.0.33')
-    spock24groovy40Implementation enforcedPlatform('org.spockframework:spock-bom:2.4-groovy-4.0')
-    spock24groovy40Implementation project(path: ':spock-deepmock')
-    spock24groovy40Implementation 'net.bytebuddy:byte-buddy'
-    spock24groovy40Implementation 'org.mockito:mockito-core'
-    spock24groovy40Implementation 'org.slf4j:slf4j-simple'
-    spock24groovy40Implementation 'org.spockframework:spock-core'
     // EmbeddedSpecRunner needs the JUnit testkit, which spock-core does not declare.
-    spock24groovy40Implementation 'org.junit.platform:junit-platform-testkit'
-    spock24groovy40RuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-spock2x.forEach { source ->
-    tasks.register("test$source", Test) { test ->
-        group = 'verification'
-
-        def set = sourceSets.named(source).get()
-        testClassesDirs = set.output.classesDirs
-        classpath = set.runtimeClasspath
-
-        useJUnitPlatform()
-    }
-    check.dependsOn "test$source"
+    testImplementation 'org.junit.platform:junit-platform-testkit'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
-    enabled = false
-}
-
-tasks.withType(GroovyCompile).configureEach {
-//    groovyOptions.fork = true
-//    groovyOptions.forkOptions.jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y']
+    useJUnitPlatform()
 }
