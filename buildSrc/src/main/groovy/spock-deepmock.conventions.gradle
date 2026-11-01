@@ -17,7 +17,9 @@ pluginManager.withPlugin('java-base') {
     tasks.withType(JavaCompile).configureEach {
         options.release = 8
         options.encoding = 'UTF-8'
-        options.compilerArgs += ['-parameters', '-Werror']
+        // JDK 25 flags --release 8 as obsolete. The library keeps Java 8 bytecode on purpose, so only
+        // that one lint category is silenced; -Werror still applies to every other warning.
+        options.compilerArgs += ['-parameters', '-Werror', '-Xlint:-options']
     }
     tasks.withType(Javadoc).configureEach {
         options.encoding = 'UTF-8'
@@ -25,6 +27,14 @@ pluginManager.withPlugin('java-base') {
     tasks.withType(AbstractArchiveTask).configureEach {
         preserveFileTimestamps = false
         reproducibleFileOrder = true
+    }
+}
+
+// Mockito's inline mock maker attaches a Java agent at runtime. The flag permits that dynamic agent
+// loading, so every test JVM in the build starts with it.
+pluginManager.withPlugin('java') {
+    tasks.withType(Test).configureEach {
+        jvmArgs '-XX:+EnableDynamicAgentLoading'
     }
 }
 
@@ -74,4 +84,125 @@ pluginManager.withPlugin('signing') {
     pluginManager.withPlugin('maven-publish') {
         publishing.publications.configureEach { signing.sign(it) }
     }
+}
+
+// The library gates. Only a published Java library gets them: examples/ applies no maven-publish, so it stays a plain
+// Spock module without lint, null-marking or mutation gates. Mirrors percolate's gate block.
+pluginManager.withPlugin('maven-publish') {
+    pluginManager.withPlugin('java') {
+        pluginManager.apply 'com.diffplug.spotless'
+        pluginManager.apply 'pmd'
+        pluginManager.apply 'codenarc'
+        pluginManager.apply 'net.ltgt.errorprone'
+        pluginManager.apply 'net.ltgt.nullaway'
+        pluginManager.apply 'info.solidsoft.pitest'
+
+        // The lint rules are published as snapshots only. The content filter keeps every other dependency on Maven
+        // Central.
+        project.repositories.maven {
+            url = 'https://central.sonatype.com/repository/maven-snapshots/'
+            mavenContent { snapshotsOnly() }
+            content { includeGroup 'io.github.joke.lint' }
+        }
+
+        dependencies {
+            annotationProcessor 'io.github.joke.jspecify:processor:2.0.0'
+            compileOnly 'org.jspecify:jspecify'
+            testCompileOnly 'org.jspecify:jspecify'
+            compileOnly 'com.groupcdg:pitest-annotations:1.1.4'
+        }
+    }
+}
+
+pluginManager.withPlugin('com.diffplug.spotless') {
+    spotless {
+        java {
+            forbidWildcardImports()
+            removeUnusedImports()
+            palantirJavaFormat('2.87.0')
+        }
+    }
+}
+
+pluginManager.withPlugin('pmd') {
+    pmd {
+        consoleOutput = true
+        rulesMinimumPriority = 5
+        // The library's ruleset references joke-strict.xml and excludes the rules that conflict with this library.
+        ruleSets = []
+        ruleSetFiles = files('config/pmd/library.xml')
+    }
+    dependencies {
+        pmd 'net.sourceforge.pmd:pmd-dist:7.26.0'
+        pmd 'io.github.joke.lint:pmd-rules:1.0.0-20261009.181420-3'
+    }
+}
+
+pluginManager.withPlugin('codenarc') {
+    codenarc {
+        config = resources.text.fromString('''
+            ruleset {
+                ruleset('rulesets/groovy/joke-strict.groovy')
+            }
+        ''')
+        maxPriority1Violations = 0
+        maxPriority2Violations = 0
+        maxPriority3Violations = 0
+    }
+    dependencies {
+        codenarc 'org.codenarc:CodeNarc:4.0.0'
+        codenarc 'io.github.joke.lint:codenarc-rules:1.0.0-20261009.181420-3'
+    }
+}
+
+pluginManager.withPlugin('net.ltgt.errorprone') {
+    dependencies {
+        errorprone 'com.google.errorprone:error_prone_core:2.49.0'
+    }
+}
+
+pluginManager.withPlugin('net.ltgt.nullaway') {
+    dependencies {
+        errorprone 'com.uber.nullaway:nullaway:0.13.4'
+    }
+    tasks.withType(JavaCompile).configureEach {
+        // --release 8 makes javac warn about ElementType.MODULE in JSpecify's @NullMarked class file, and that warning
+        // cannot be suppressed on its own. -Werror would turn it into a build failure, so it is removed for the
+        // library. Errors still fail the build, and NullAway and RequireExplicitNullMarking are errors. Other Error
+        // Prone warnings no longer fail the build.
+        options.compilerArgs -= '-Werror'
+        options.errorprone {
+            disableWarningsInGeneratedCode = true
+            error('RequireExplicitNullMarking')
+            nullaway {
+                error()
+                onlyNullMarked = true
+                treatGeneratedAsUnannotated = true
+                jspecifyMode = true
+            }
+        }
+    }
+}
+
+pluginManager.withPlugin('info.solidsoft.pitest') {
+    pitest {
+        outputFormats = ['XML', 'HTML']
+        pitestVersion = '1.25.8'
+        junit5PluginVersion = '1.2.3'
+        mutators = ['ALL']
+        enableDefaultIncrementalAnalysis = true
+        includedGroups = ['unit']
+        timestampedReports = false
+        threads = Runtime.runtime.availableProcessors()
+        jvmArgs = ['-XX:+EnableDynamicAgentLoading', '-Dspock.parallel.disabled=true',
+                   '--add-opens=java.compiler/javax.annotation.processing=ALL-UNNAMED']
+        failWhenNoMutations = true
+        mutationThreshold = 100
+        coverageThreshold = 100
+        testStrengthThreshold = 100
+    }
+    dependencies {
+        pitest 'org.pitest:pitest-history-plugin:0.0.1'
+    }
+    tasks.named('check') { dependsOn 'pitest' }
 }

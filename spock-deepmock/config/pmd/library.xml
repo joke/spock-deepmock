@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ruleset name="spock-deepmock"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+    <description>
+        The joke-strict ruleset for spock-deepmock, minus three rules that conflict with this library. Each exclusion
+        is a constraint of the library, not a wish to skip the check, so no code carries a suppression for it.
+    </description>
+
+    <rule ref="rulesets/java/joke-strict.xml">
+        <!-- The library targets Java 8, and the var keyword needs Java 10. -->
+        <exclude name="UseVarForLocalVariables"/>
+        <!-- DeepMock and GroovyDeepMock are the public API. Their names are fixed by Spock's MockingApi. -->
+        <exclude name="MethodNamingConventions"/>
+        <!-- The visitor in DeepMockTransformation overrides Groovy's public visit methods, so those overrides must stay
+             public even though the class is private. -->
+        <exclude name="PublicMemberInNonPublicType"/>
+        <!-- ChainWalker binds to the thread that evaluates an interaction target, so that other threads keep the
+             normal mock identity (see the Concurrent calls requirement). Thread use is the mechanism, not a mistake. -->
+        <exclude name="DoNotUseThreads"/>
+        <!-- The mock cache guards its identity map with a lock. ConcurrentHashMap rejects null values and compares
+             keys with equals, so it would change the behavior of the identity map. -->
+        <exclude name="UseConcurrentHashMap"/>
+    </rule>
+</ruleset>
