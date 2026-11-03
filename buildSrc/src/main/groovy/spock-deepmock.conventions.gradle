@@ -133,7 +133,7 @@ pluginManager.withPlugin('pmd') {
         ruleSetFiles = files('config/pmd/library.xml')
     }
     dependencies {
-        pmd 'net.sourceforge.pmd:pmd-dist:7.26.0'
+        pmd 'net.sourceforge.pmd:pmd-dist:7.29.0'
         pmd 'io.github.joke.lint:pmd-rules:1.0.0-20261009.181420-3'
     }
 }
@@ -157,13 +157,13 @@ pluginManager.withPlugin('codenarc') {
 
 pluginManager.withPlugin('net.ltgt.errorprone') {
     dependencies {
-        errorprone 'com.google.errorprone:error_prone_core:2.49.0'
+        errorprone 'com.google.errorprone:error_prone_core:2.52.0'
     }
 }
 
 pluginManager.withPlugin('net.ltgt.nullaway') {
     dependencies {
-        errorprone 'com.uber.nullaway:nullaway:0.13.4'
+        errorprone 'com.uber.nullaway:nullaway:0.14.3'
     }
     tasks.withType(JavaCompile).configureEach {
         // --release 8 makes javac warn about ElementType.MODULE in JSpecify's @NullMarked class file, and that warning
